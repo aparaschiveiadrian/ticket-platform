@@ -1,13 +1,13 @@
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     ports:
-      - "5432:5432"
+      - "5433:5432"
     restart: always
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ticketsDB
+      POSTGRES_DB: ticketingdb
   #  for visual representation of the database
   adminer:
     image: adminer:latest

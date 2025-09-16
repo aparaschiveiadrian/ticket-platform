@@ -11,6 +11,23 @@ services:
   #  for visual representation of the database
   adminer:
     image: adminer:latest
-    restart: always
     ports:
-      - "8080:8080"
+      - "8888:8080"
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    # made it run on port 9090 to avoid conflict with ticket-service LOCALLY
+    ports:
+      - "9090:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    # persist users through container restarts
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    command:
+      - start-dev
+      - --db=dev-file # save configuration to disk
+
+volumes:
+  keycloak-data:
+    driver: local

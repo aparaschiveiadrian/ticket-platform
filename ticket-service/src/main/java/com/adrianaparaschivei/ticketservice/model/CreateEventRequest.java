@@ -1,6 +1,5 @@
-package com.adrianaparaschivei.ticketservice.model.dto;
+package com.adrianaparaschivei.ticketservice.model;
 
-import com.adrianaparaschivei.ticketservice.model.entity.User;
 import com.adrianaparaschivei.ticketservice.model.enums.EventStatusEnum;
 
 import java.time.LocalDateTime;

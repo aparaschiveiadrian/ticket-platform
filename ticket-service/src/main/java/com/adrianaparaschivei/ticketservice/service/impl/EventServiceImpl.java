@@ -1,7 +1,7 @@
 package com.adrianaparaschivei.ticketservice.service.impl;
 
 import com.adrianaparaschivei.ticketservice.exception.UserNotFoundException;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateEventRequest;
+import com.adrianaparaschivei.ticketservice.model.CreateEventRequest;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.model.entity.TicketType;
 import com.adrianaparaschivei.ticketservice.model.entity.User;

@@ -1,10 +1,10 @@
 package com.adrianaparaschivei.ticketservice.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,7 +28,26 @@ public class User {
   @Column(name = "email", nullable = false, unique = true)
   private String email;
 
-  // TO DO: Organized events, Attending events, Staffinf events
+  // organize events
+  // convention of who owns the 'many' side
+  @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
+  private List<Event> organizedEvents = new ArrayList<>();
+
+  // attending events
+  @ManyToMany
+  @JoinTable(
+      name = "user_attending_events",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "event_id"))
+  private List<Event> attendingEvents = new ArrayList<>();
+
+  // staffing events
+  @ManyToMany
+  @JoinTable(
+      name = "user_staffing_events",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "event_id"))
+  private List<Event> staffingEvents = new ArrayList<>();
 
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)

@@ -1,4 +1,4 @@
-package com.adrianaparaschivei.ticketservice.model.entity;
+package com.adrianaparaschivei.ticketservice.model.enums;
 
 // the states an Event can be in
 public enum EventStatusEnum {

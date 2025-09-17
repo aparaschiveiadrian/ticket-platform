@@ -31,18 +31,6 @@ public class EventServiceImpl implements EventService {
                     new UserNotFoundException(
                         String.format("User with ID %s not found", organizerId)));
 
-    List<TicketType> ticketTypesToCreate =
-        event.ticketTypeRequestList().stream()
-            .map(
-                ticketType ->
-                    TicketType.builder()
-                        .name(ticketType.name())
-                        .price(ticketType.price())
-                        .description(ticketType.description())
-                        .totalAvailable(ticketType.totalAvailable())
-                        .build())
-            .toList();
-
     Event eventToCreate =
         Event.builder()
             .name(event.name())
@@ -53,8 +41,22 @@ public class EventServiceImpl implements EventService {
             .salesEnd(event.salesEnd())
             .status(event.status())
             .organizer(organizer)
-            .ticketTypes(ticketTypesToCreate)
             .build();
+
+    List<TicketType> ticketTypesToCreate =
+        event.ticketTypeRequestList().stream()
+            .map(
+                ticketType ->
+                    TicketType.builder()
+                        .name(ticketType.name())
+                        .price(ticketType.price())
+                        .description(ticketType.description())
+                        .totalAvailable(ticketType.totalAvailable())
+                        .event(eventToCreate)
+                        .build())
+            .toList();
+
+    eventToCreate.setTicketTypes(ticketTypesToCreate);
 
     return eventRepository.save(eventToCreate);
   }

@@ -14,5 +14,4 @@ public record CreateEventRequest(
         LocalDateTime salesStart,
         LocalDateTime salesEnd,
         EventStatusEnum status,
-        User organizer,
         List<CreateTicketTypeRequest> ticketTypeRequestList) {}

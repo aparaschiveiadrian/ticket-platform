@@ -18,7 +18,7 @@ public class SecurityConfig {
       HttpSecurity http, UserProvisioningFilter userProvisioningFilter) throws Exception {
     // all requests should be authenticated
     http.authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
                     // catch-all: any other request must be authenticated
                     .anyRequest().authenticated())
         // no CSRF protection because we use JWT tokens(stateless), so no need for it since no

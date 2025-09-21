@@ -35,5 +35,5 @@ public interface EventMapper {
 
   UpdateTicketTypeResponseDto toUpdateTicketTypeResponseDto(TicketType ticketType);
 
-  UpdateTicketTypeResponseDto toUpdateEventResponseDto (Event event);
+  UpdateEventResponseDto toUpdateEventResponseDto (Event event);
 }

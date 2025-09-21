@@ -1,12 +1,9 @@
 package com.adrianaparaschivei.ticketservice.controller;
 
-import com.adrianaparaschivei.ticketservice.exception.EventNotFoundException;
 import com.adrianaparaschivei.ticketservice.mapper.EventMapper;
 import com.adrianaparaschivei.ticketservice.model.CreateEventRequest;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateEventRequestDto;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateEventResponseDto;
-import com.adrianaparaschivei.ticketservice.model.dto.GetEventDetailsResponseDto;
-import com.adrianaparaschivei.ticketservice.model.dto.ListEventResponseDto;
+import com.adrianaparaschivei.ticketservice.model.UpdateEventRequest;
+import com.adrianaparaschivei.ticketservice.model.dto.*;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.service.EventService;
 import jakarta.validation.Valid;
@@ -64,6 +61,21 @@ public class EventController {
             eventService.getEventForOrganizer(userId, eventId));
 
     return ResponseEntity.ok(dto);
+  }
+
+  @PutMapping("/{eventId}")
+  public ResponseEntity<UpdateEventResponseDto> updateEvent(
+      @AuthenticationPrincipal Jwt jwt,
+      @PathVariable UUID eventId,
+      @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto) {
+    UpdateEventRequest updateEventRequest = eventMapper.fromDto(updateEventRequestDto);
+    UUID userId = parseUserId(jwt);
+
+    Event updatedEvent = eventService.updateEventForOrganizer(userId, eventId, updateEventRequest);
+
+    UpdateEventResponseDto updateEventResponseDto = eventMapper.toUpdateEventResponseDto(updatedEvent);
+
+    return new ResponseEntity<>(updateEventResponseDto, HttpStatus.OK);
   }
 
   private UUID parseUserId(Jwt jwt) {

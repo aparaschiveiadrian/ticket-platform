@@ -6,7 +6,6 @@ import com.adrianaparaschivei.ticketservice.model.dto.*;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.model.entity.TicketType;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -23,4 +22,8 @@ public interface EventMapper {
   ListEventTicketTypeResponseDto toDto(TicketType ticketType);
 
   ListEventResponseDto toListEventResponseDto(Event event);
+
+  GetEventDetailsTicketTypesResponseDto toGetEventDetailsTicketTypesResponseDto(TicketType ticketType);
+
+  GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
 }

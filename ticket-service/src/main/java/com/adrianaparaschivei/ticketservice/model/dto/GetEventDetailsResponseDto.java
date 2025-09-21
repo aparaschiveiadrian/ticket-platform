@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record CreateEventResponseDto(
+public record GetEventDetailsResponseDto(
     UUID id,
     String name,
     LocalDateTime start,
@@ -15,6 +15,6 @@ public record CreateEventResponseDto(
     LocalDateTime salesStart,
     LocalDateTime salesEnd,
     EventStatusEnum status,
-    List<CreateTicketTypeResponseDto> ticketTypes,
+    List<GetEventDetailsTicketTypesResponseDto> ticketTypes,
     LocalDateTime createdAt,
     LocalDateTime updatedAt) {}

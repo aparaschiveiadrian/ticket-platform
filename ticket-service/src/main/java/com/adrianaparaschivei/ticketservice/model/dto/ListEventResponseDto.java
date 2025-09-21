@@ -15,7 +15,7 @@ public record ListEventResponseDto(
         String name,
         LocalDateTime start,
         LocalDateTime end,
-        String venue,
+        String location,
         LocalDateTime salesStart,
         LocalDateTime salesEnd,
         EventStatusEnum status,

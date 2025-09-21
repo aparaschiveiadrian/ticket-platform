@@ -9,6 +9,7 @@ import com.adrianaparaschivei.ticketservice.model.UpdateTicketTypeRequest;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.model.entity.TicketType;
 import com.adrianaparaschivei.ticketservice.model.entity.User;
+import com.adrianaparaschivei.ticketservice.model.enums.EventStatusEnum;
 import com.adrianaparaschivei.ticketservice.repository.EventRepository;
 import com.adrianaparaschivei.ticketservice.repository.UserRepository;
 import com.adrianaparaschivei.ticketservice.service.EventService;
@@ -158,5 +159,10 @@ public class EventServiceImpl implements EventService {
   public void deleteEventForOrganizer(UUID organizerId, UUID id) {
     Event event = getEventForOrganizer(organizerId, id);
     eventRepository.delete(event);
+  }
+
+  @Override
+  public Page<Event> listPublishedEvents(Pageable pageable) {
+    return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
   }
 }

@@ -1,0 +1,23 @@
+package com.adrianaparaschivei.ticketservice.exception;
+
+public class TicketTypeNotFoundException extends RuntimeException {
+  public TicketTypeNotFoundException() {
+    super();
+  }
+
+  public TicketTypeNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public TicketTypeNotFoundException(Throwable cause) {
+    super(cause);
+  }
+
+  protected TicketTypeNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
+  }
+
+  public TicketTypeNotFoundException(String message) {
+    super(message);
+  }
+}

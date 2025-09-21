@@ -1,5 +1,6 @@
 package com.adrianaparaschivei.ticketservice.controller;
 
+import com.adrianaparaschivei.ticketservice.exception.EventNotFoundException;
 import com.adrianaparaschivei.ticketservice.exception.UserNotFoundException;
 import com.adrianaparaschivei.ticketservice.model.dto.ErrorDto;
 import jakarta.validation.ConstraintViolationException;
@@ -14,6 +15,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+  @ExceptionHandler(EventNotFoundException.class)
+  public ResponseEntity<ErrorDto> handleEventNotFoundException(
+      EventNotFoundException ex) {
+    log.error("Caught EventNotFoundException: ", ex);
+
+    ErrorDto errorDto = new ErrorDto("Event not found! ");
+    return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+  }
 
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<ErrorDto> handleUserNotFoundException(

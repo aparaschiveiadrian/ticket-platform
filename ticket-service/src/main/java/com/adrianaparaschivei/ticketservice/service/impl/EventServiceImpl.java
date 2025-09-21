@@ -1,5 +1,6 @@
 package com.adrianaparaschivei.ticketservice.service.impl;
 
+import com.adrianaparaschivei.ticketservice.exception.EventNotFoundException;
 import com.adrianaparaschivei.ticketservice.exception.UserNotFoundException;
 import com.adrianaparaschivei.ticketservice.model.CreateEventRequest;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
@@ -39,7 +40,6 @@ public class EventServiceImpl implements EventService {
             .start(event.start())
             .end(event.end())
             .location(event.location())
-            .venue(event.location())
             .salesStart(event.salesStart())
             .salesEnd(event.salesEnd())
             .status(event.status())
@@ -62,6 +62,13 @@ public class EventServiceImpl implements EventService {
     eventToCreate.setTicketTypes(ticketTypesToCreate);
 
     return eventRepository.save(eventToCreate);
+  }
+
+  @Override
+  public Event getEventForOrganizer(UUID organizerId, UUID eventId) {
+    return eventRepository
+        .findByIdAndOrganizerId(eventId, organizerId)
+        .orElseThrow(() -> new EventNotFoundException());
   }
 
   @Override

@@ -31,17 +31,14 @@ public class Event {
   @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
-  @Column(name = "location", nullable = false)
-  private String location;
-
   @Column(name = "event_start", nullable = false)
   LocalDateTime start;
 
   @Column(name = "event_end", nullable = false)
   LocalDateTime end;
 
-  @Column(name = "venue", nullable = false)
-  private String venue;
+  @Column(name = "location", nullable = false)
+  private String location;
 
   @Column(name = "sales_start", nullable = true) // may be null if not announced yet
   private LocalDateTime salesStart;
@@ -79,11 +76,11 @@ public class Event {
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
     Event event = (Event) o;
-    return Objects.equals(id, event.id) && Objects.equals(name, event.name) && Objects.equals(description, event.description) && Objects.equals(location, event.location) && Objects.equals(start, event.start) && Objects.equals(end, event.end) && Objects.equals(venue, event.venue) && Objects.equals(salesStart, event.salesStart) && Objects.equals(salesEnd, event.salesEnd) && status == event.status && Objects.equals(createdAt, event.createdAt) && Objects.equals(updatedAt, event.updatedAt);
+    return Objects.equals(id, event.id) && Objects.equals(name, event.name) && Objects.equals(description, event.description) && Objects.equals(location, event.location) && Objects.equals(start, event.start) && Objects.equals(end, event.end) && Objects.equals(salesStart, event.salesStart) && Objects.equals(salesEnd, event.salesEnd) && status == event.status && Objects.equals(createdAt, event.createdAt) && Objects.equals(updatedAt, event.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, location, start, end, venue, salesStart, salesEnd, status, createdAt, updatedAt);
+    return Objects.hash(id, name, description, location, start, end, salesStart, salesEnd, status, createdAt, updatedAt);
   }
 }

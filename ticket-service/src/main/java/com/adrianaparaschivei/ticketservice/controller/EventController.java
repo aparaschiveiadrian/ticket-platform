@@ -1,9 +1,11 @@
 package com.adrianaparaschivei.ticketservice.controller;
 
+import com.adrianaparaschivei.ticketservice.exception.EventNotFoundException;
 import com.adrianaparaschivei.ticketservice.mapper.EventMapper;
 import com.adrianaparaschivei.ticketservice.model.CreateEventRequest;
 import com.adrianaparaschivei.ticketservice.model.dto.CreateEventRequestDto;
 import com.adrianaparaschivei.ticketservice.model.dto.CreateEventResponseDto;
+import com.adrianaparaschivei.ticketservice.model.dto.GetEventDetailsResponseDto;
 import com.adrianaparaschivei.ticketservice.model.dto.ListEventResponseDto;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.service.EventService;
@@ -49,6 +51,19 @@ public class EventController {
     UUID userId = parseUserId(jwt);
     Page<Event> events = eventService.listEventsForOrganizer(userId, pageable);
     return ResponseEntity.ok(events.map(eventMapper::toListEventResponseDto));
+  }
+
+  @GetMapping("/{eventId}")
+  public ResponseEntity<GetEventDetailsResponseDto> getEvent(
+      @AuthenticationPrincipal Jwt jwt, @PathVariable UUID eventId) {
+
+    UUID userId = parseUserId(jwt);
+
+    GetEventDetailsResponseDto dto =
+        eventMapper.toGetEventDetailsResponseDto(
+            eventService.getEventForOrganizer(userId, eventId));
+
+    return ResponseEntity.ok(dto);
   }
 
   private UUID parseUserId(Jwt jwt) {

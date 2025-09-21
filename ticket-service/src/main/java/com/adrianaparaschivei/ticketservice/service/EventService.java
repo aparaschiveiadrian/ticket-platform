@@ -22,4 +22,6 @@ public interface EventService {
   Page<Event> listPublishedEvents(Pageable pageable); // to list all published events
 
   Page<Event> searchPublishedEvents(String query, Pageable pageable);
+
+  Event getPublishedEventById(UUID id); // to check details of a published event
 }

@@ -1,6 +1,7 @@
 package com.adrianaparaschivei.ticketservice.controller;
 
 import com.adrianaparaschivei.ticketservice.mapper.EventMapper;
+import com.adrianaparaschivei.ticketservice.model.dto.GetPublishedEventDetailsResponseDto;
 import com.adrianaparaschivei.ticketservice.model.dto.ListPublishedEventResponseDto;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.service.EventService;
@@ -8,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 // This controller will handle requests related to published events
 @RestController
@@ -34,5 +34,11 @@ public class PublishedEventController {
     }
 
     return ResponseEntity.ok(events.map(eventMapper::toListPublishedEventResponseDto));
+  }
+
+  @GetMapping("{eventId}")
+  public ResponseEntity<GetPublishedEventDetailsResponseDto> getPublishedEventDetails(@PathVariable UUID eventId) {
+    Event event = eventService.getPublishedEventById(eventId);
+    return ResponseEntity.ok(eventMapper.toGetPublishedEventDetailsResponseDto(event));
   }
 }

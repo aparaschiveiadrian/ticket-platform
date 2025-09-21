@@ -61,7 +61,7 @@ public class Event {
   @ManyToMany(mappedBy = "staffingEvents")
   private List<User> staff;
 
-  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TicketType> ticketTypes = new ArrayList<>();
 
   @CreatedDate

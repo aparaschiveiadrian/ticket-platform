@@ -1,6 +1,7 @@
 package com.adrianaparaschivei.ticketservice.service;
 
 import com.adrianaparaschivei.ticketservice.model.CreateEventRequest;
+import com.adrianaparaschivei.ticketservice.model.UpdateEventRequest;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,6 @@ public interface EventService {
   Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable);
 
   Event getEventForOrganizer(UUID organizerId, UUID id); // to check details of an event
+
+  Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event);
 }

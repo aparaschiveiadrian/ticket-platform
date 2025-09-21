@@ -16,4 +16,6 @@ public interface EventService {
   Event getEventForOrganizer(UUID organizerId, UUID id); // to check details of an event
 
   Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event);
+
+  void deleteEventForOrganizer(UUID organizerId, UUID id);
 }

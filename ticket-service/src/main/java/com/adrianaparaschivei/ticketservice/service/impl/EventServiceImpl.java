@@ -76,7 +76,7 @@ public class EventServiceImpl implements EventService {
   public Event getEventForOrganizer(UUID organizerId, UUID eventId) {
     return eventRepository
         .findByIdAndOrganizerId(eventId, organizerId)
-        .orElseThrow(() -> new EventNotFoundException());
+        .orElseThrow(() -> new EventNotFoundException("The specified event was not found"));
   }
 
   @Override
@@ -151,5 +151,12 @@ public class EventServiceImpl implements EventService {
       }
     }
     return eventRepository.save(existingEvent);
+  }
+
+  @Override
+  @Transactional
+  public void deleteEventForOrganizer(UUID organizerId, UUID id) {
+    Event event = getEventForOrganizer(organizerId, id);
+    eventRepository.delete(event);
   }
 }

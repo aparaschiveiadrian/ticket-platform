@@ -4,6 +4,7 @@ import com.adrianaparaschivei.ticketservice.exception.UserNotFoundException;
 import com.adrianaparaschivei.ticketservice.model.dto.ErrorDto;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,6 +54,20 @@ public class GlobalExceptionHandler {
 
     ErrorDto errorDto = new ErrorDto(errorMessage);
 
+    return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorDto> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex) {
+    log.error("Caught DataIntegrityViolationException: ", ex);
+    
+    String errorMessage = "Data validation error occurred.";
+    if (ex.getMessage() != null && ex.getMessage().contains("null value")) {
+      errorMessage = "Required field is missing or invalid.";
+    }
+    
+    ErrorDto errorDto = new ErrorDto(errorMessage);
     return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
   }
 

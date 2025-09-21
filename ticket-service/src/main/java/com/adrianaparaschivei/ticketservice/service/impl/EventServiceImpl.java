@@ -9,6 +9,8 @@ import com.adrianaparaschivei.ticketservice.repository.EventRepository;
 import com.adrianaparaschivei.ticketservice.repository.UserRepository;
 import com.adrianaparaschivei.ticketservice.service.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +38,8 @@ public class EventServiceImpl implements EventService {
             .name(event.name())
             .start(event.start())
             .end(event.end())
-            .venue(event.venue())
+            .location(event.location())
+            .venue(event.location())
             .salesStart(event.salesStart())
             .salesEnd(event.salesEnd())
             .status(event.status())
@@ -59,5 +62,10 @@ public class EventServiceImpl implements EventService {
     eventToCreate.setTicketTypes(ticketTypesToCreate);
 
     return eventRepository.save(eventToCreate);
+  }
+
+  @Override
+  public Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable) {
+    return eventRepository.findByOrganizerId(organizerId, pageable);
   }
 }

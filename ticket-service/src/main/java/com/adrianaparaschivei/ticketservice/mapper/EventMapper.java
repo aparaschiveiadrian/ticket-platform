@@ -2,13 +2,11 @@ package com.adrianaparaschivei.ticketservice.mapper;
 
 import com.adrianaparaschivei.ticketservice.model.CreateEventRequest;
 import com.adrianaparaschivei.ticketservice.model.CreateTicketTypeRequest;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateEventRequestDto;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateEventResponseDto;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateTicketTypeRequestDto;
-import com.adrianaparaschivei.ticketservice.model.dto.CreateTicketTypeResponseDto;
+import com.adrianaparaschivei.ticketservice.model.dto.*;
 import com.adrianaparaschivei.ticketservice.model.entity.Event;
 import com.adrianaparaschivei.ticketservice.model.entity.TicketType;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -22,5 +20,7 @@ public interface EventMapper {
 
   CreateEventResponseDto toDto(Event event);
 
-  CreateTicketTypeResponseDto toDto(TicketType ticketType);
+  ListEventTicketTypeResponseDto toDto(TicketType ticketType);
+
+  ListEventResponseDto toListEventResponseDto(Event event);
 }

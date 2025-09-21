@@ -15,7 +15,7 @@ public record CreateEventRequestDto(
     @NotBlank(message = "Event name is required") String name,
     LocalDateTime start,
     LocalDateTime end,
-    @NotBlank(message = "Venue information is required") String venue,
+    @NotBlank(message = "Location information is required") String location,
     LocalDateTime salesStart,
     LocalDateTime salesEnd,
     @NotNull(message = "Event status is required") EventStatusEnum status,

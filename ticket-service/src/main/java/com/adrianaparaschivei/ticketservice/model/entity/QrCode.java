@@ -18,8 +18,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class QrCode {
+
+  //will be given manually in the service layer
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", nullable = false, updatable = false)
   private UUID id;
 
@@ -27,7 +28,7 @@ public class QrCode {
   @Enumerated(EnumType.STRING)
   private QrCodeStatusEnum status;
 
-  @Column(name = "value", nullable = false, unique = true)
+  @Column(name = "value", nullable = false, unique = true, columnDefinition = "TEXT")
   private String value; // TO DO how to generate and store
 
   @ManyToOne(fetch = FetchType.LAZY)

@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
+  @ExceptionHandler(TicketNotFoundException.class)
+  public ResponseEntity<ErrorDto> handleTicketNotFoundException(TicketNotFoundException ex) {
+    log.error("Caught TicketNotFoundException: ", ex);
+
+    ErrorDto errorDto = new ErrorDto("Ticket not found!");
+    return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+  }
+
   @ExceptionHandler(TicketsSoldOutException.class)
   public ResponseEntity<ErrorDto> handleTicketsSoldOutException(TicketsSoldOutException ex) {
     log.error("Caught TicketsSoldOutException: ", ex);

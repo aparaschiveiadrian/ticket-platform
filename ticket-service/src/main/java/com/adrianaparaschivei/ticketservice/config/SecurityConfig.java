@@ -4,7 +4,6 @@ import com.adrianaparaschivei.ticketservice.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
@@ -15,19 +14,30 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(
-      HttpSecurity http, UserProvisioningFilter userProvisioningFilter) throws Exception {
+      HttpSecurity http,
+      UserProvisioningFilter userProvisioningFilter,
+      JwtAuthConverter jwtAuthConverter)
+      throws Exception {
     // all requests should be authenticated
-    http.authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
+    http.authorizeHttpRequests(
+            authorize ->
+                authorize
+                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**")
+                    .permitAll()
+                    .requestMatchers("/api/v1/events")
+                    .hasRole("ORGANIZER")
+
                     // catch-all: any other request must be authenticated
-                    .anyRequest().authenticated())
+                    .anyRequest()
+                    .authenticated())
         // no CSRF protection because we use JWT tokens(stateless), so no need for it since no
         // sessions
         .csrf(csrf -> csrf.disable())
         // make sure we use stateless session, session won't be used to store user's state.
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        .oauth2ResourceServer(
+            oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
         .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
     return http.build();
   }

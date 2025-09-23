@@ -36,19 +36,19 @@ public class TicketValidationServiceImpl implements TicketValidationService {
 
     Ticket ticket = qrCode.getTicket();
 
-    return validateTicket(ticket);
+    return validateTicket(ticket, TicketValidationMethodEnum.QR_SCAN);
   }
 
   @Override
   public TicketValidation validateTicketManually(UUID ticketId) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(TicketNotFoundException::new);
-    return validateTicket(ticket);
+    return validateTicket(ticket, TicketValidationMethodEnum.MANUAL);
   }
 
-  private TicketValidation validateTicket(Ticket ticket) {
+  private TicketValidation validateTicket(Ticket ticket, TicketValidationMethodEnum ticketValidationMethod) {
     TicketValidation ticketValidation = new TicketValidation();
     ticketValidation.setTicket(ticket);
-    ticketValidation.setValidationMethod(TicketValidationMethodEnum.QR_SCAN);
+    ticketValidation.setValidationMethod(ticketValidationMethod);
 
     TicketValidationStatusEnum ticketValidationStatus =
         ticket.getValidations().stream()

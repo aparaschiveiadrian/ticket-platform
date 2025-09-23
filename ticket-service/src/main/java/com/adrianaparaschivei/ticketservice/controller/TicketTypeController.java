@@ -1,15 +1,12 @@
 package com.adrianaparaschivei.ticketservice.controller;
 
+import com.adrianaparaschivei.ticketservice.model.dto.PurchaseTicketsResponseDto;
 import com.adrianaparaschivei.ticketservice.service.TicketTypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,11 +20,12 @@ public class TicketTypeController {
   private final TicketTypeService ticketTypeService;
 
   @PostMapping("/{ticketTypeId}/tickets")
-  public ResponseEntity<Void> purchaseTicket(
+  public ResponseEntity<PurchaseTicketsResponseDto> purchaseTicket(
           @AuthenticationPrincipal Jwt jwt,
-          @PathVariable UUID ticketTypeId
+          @PathVariable UUID ticketTypeId,
+          @RequestParam(name = "quantity", defaultValue = "1") int quantity
   ){
-    ticketTypeService.purchaseTicket(parseUserId(jwt), ticketTypeId);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    PurchaseTicketsResponseDto result = ticketTypeService.purchaseTickets(parseUserId(jwt), ticketTypeId, quantity);
+    return ResponseEntity.ok(result);
   }
 }

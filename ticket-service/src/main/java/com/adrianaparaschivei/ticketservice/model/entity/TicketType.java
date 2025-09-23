@@ -51,6 +51,10 @@ public class TicketType {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
+  @Version
+  @Column(name = "version", nullable = false)
+  private Long version;
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;

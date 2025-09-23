@@ -15,6 +15,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
+  @ExceptionHandler(ConcurrentTicketPurchaseException.class)
+  public ResponseEntity<ErrorDto> handleConcurrentTicketPurchaseException(
+      ConcurrentTicketPurchaseException ex) {
+    log.error("Caught ConcurrentTicketPurchaseException: ", ex);
+
+    ErrorDto errorDto =
+        new ErrorDto(
+            "Could not complete the purchase due to concurrent updates. Please try again.");
+    return new ResponseEntity<>(errorDto, HttpStatus.CONFLICT);
+  }
+
   @ExceptionHandler(TicketNotFoundException.class)
   public ResponseEntity<ErrorDto> handleTicketNotFoundException(TicketNotFoundException ex) {
     log.error("Caught TicketNotFoundException: ", ex);

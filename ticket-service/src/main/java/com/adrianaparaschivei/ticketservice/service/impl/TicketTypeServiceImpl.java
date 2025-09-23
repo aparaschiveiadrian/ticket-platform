@@ -43,7 +43,7 @@ public class TicketTypeServiceImpl implements TicketTypeService {
     int purchasedTickets = ticketRepository.countByTicketTypeId(ticketTypeId);
     Integer totalAvailableTickets = ticketType.getTotalAvailable();
 
-    if (totalAvailableTickets != null && purchasedTickets >= totalAvailableTickets) {
+    if (totalAvailableTickets != null && purchasedTickets - 1 > totalAvailableTickets) {
       throw new TicketsSoldOutException("Tickets are sold out!");
     }
 

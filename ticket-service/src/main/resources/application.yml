@@ -24,3 +24,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9090/realms/event-ticket-platform
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000

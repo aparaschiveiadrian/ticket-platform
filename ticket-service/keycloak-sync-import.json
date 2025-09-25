@@ -1,0 +1,603 @@
+{
+  "realm": "event-ticket-platform",
+  "displayName": "Event Ticket Platform",
+  "enabled": true,
+  "loginTheme": "keycloak",
+  "accountTheme": "keycloak",
+  "adminTheme": "keycloak",
+  "emailTheme": "keycloak",
+  "clients": [
+    {
+      "clientId": "event-ticket-platform-app",
+      "name": "Event Ticket Platform App",
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"],
+      "secret": "gJCNV7hMkw2ZK9FyARIKTcalWDFacA1g"
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "ROLE_ORGANIZER",
+        "description": "Can manage events and ticket types",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "ROLE_STAFF",
+        "description": "Can validate tickets",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "ROLE_ATTENDEE",
+        "description": "Can purchase tickets and view own tickets",
+        "composite": false,
+        "clientRole": false
+      }
+    ]
+  },
+  "users": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "username": "organizer1",
+      "email": "organizer1@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer1",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "username": "organizer2",
+      "email": "organizer2@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer2",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "username": "organizer3",
+      "email": "organizer3@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer3",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440004",
+      "username": "organizer4",
+      "email": "organizer4@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer4",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440005",
+      "username": "organizer5",
+      "email": "organizer5@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer5",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440006",
+      "username": "organizer6",
+      "email": "organizer6@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer6",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440007",
+      "username": "organizer7",
+      "email": "organizer7@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer7",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440008",
+      "username": "organizer8",
+      "email": "organizer8@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer8",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440009",
+      "username": "organizer9",
+      "email": "organizer9@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer9",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440010",
+      "username": "organizer10",
+      "email": "organizer10@example.com",
+      "firstName": "Event",
+      "lastName": "Organizer10",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ORGANIZER"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440011",
+      "username": "staff1",
+      "email": "staff1@example.com",
+      "firstName": "Event",
+      "lastName": "Staff1",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440012",
+      "username": "staff2",
+      "email": "staff2@example.com",
+      "firstName": "Event",
+      "lastName": "Staff2",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440013",
+      "username": "staff3",
+      "email": "staff3@example.com",
+      "firstName": "Event",
+      "lastName": "Staff3",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440014",
+      "username": "staff4",
+      "email": "staff4@example.com",
+      "firstName": "Event",
+      "lastName": "Staff4",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440015",
+      "username": "staff5",
+      "email": "staff5@example.com",
+      "firstName": "Event",
+      "lastName": "Staff5",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440016",
+      "username": "staff6",
+      "email": "staff6@example.com",
+      "firstName": "Event",
+      "lastName": "Staff6",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440017",
+      "username": "staff7",
+      "email": "staff7@example.com",
+      "firstName": "Event",
+      "lastName": "Staff7",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440018",
+      "username": "staff8",
+      "email": "staff8@example.com",
+      "firstName": "Event",
+      "lastName": "Staff8",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440019",
+      "username": "staff9",
+      "email": "staff9@example.com",
+      "firstName": "Event",
+      "lastName": "Staff9",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440020",
+      "username": "staff10",
+      "email": "staff10@example.com",
+      "firstName": "Event",
+      "lastName": "Staff10",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_STAFF"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440021",
+      "username": "attendee1",
+      "email": "attendee1@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee1",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440022",
+      "username": "attendee2",
+      "email": "attendee2@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee2",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440023",
+      "username": "attendee3",
+      "email": "attendee3@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee3",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440024",
+      "username": "attendee4",
+      "email": "attendee4@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee4",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440025",
+      "username": "attendee5",
+      "email": "attendee5@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee5",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440026",
+      "username": "attendee6",
+      "email": "attendee6@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee6",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440027",
+      "username": "attendee7",
+      "email": "attendee7@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee7",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440028",
+      "username": "attendee8",
+      "email": "attendee8@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee8",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440029",
+      "username": "attendee9",
+      "email": "attendee9@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee9",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440030",
+      "username": "attendee10",
+      "email": "attendee10@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee10",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440031",
+      "username": "attendee11",
+      "email": "attendee11@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee11",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440032",
+      "username": "attendee12",
+      "email": "attendee12@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee12",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440033",
+      "username": "attendee13",
+      "email": "attendee13@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee13",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440034",
+      "username": "attendee14",
+      "email": "attendee14@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee14",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440035",
+      "username": "attendee15",
+      "email": "attendee15@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee15",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440036",
+      "username": "attendee16",
+      "email": "attendee16@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee16",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440037",
+      "username": "attendee17",
+      "email": "attendee17@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee17",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440038",
+      "username": "attendee18",
+      "email": "attendee18@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee18",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440039",
+      "username": "attendee19",
+      "email": "attendee19@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee19",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440040",
+      "username": "attendee20",
+      "email": "attendee20@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee20",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440041",
+      "username": "attendee21",
+      "email": "attendee21@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee21",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440042",
+      "username": "attendee22",
+      "email": "attendee22@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee22",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440043",
+      "username": "attendee23",
+      "email": "attendee23@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee23",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440044",
+      "username": "attendee24",
+      "email": "attendee24@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee24",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440045",
+      "username": "attendee25",
+      "email": "attendee25@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee25",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440046",
+      "username": "attendee26",
+      "email": "attendee26@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee26",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440047",
+      "username": "attendee27",
+      "email": "attendee27@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee27",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440048",
+      "username": "attendee28",
+      "email": "attendee28@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee28",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440049",
+      "username": "attendee29",
+      "email": "attendee29@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee29",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440050",
+      "username": "attendee30",
+      "email": "attendee30@example.com",
+      "firstName": "Event",
+      "lastName": "Attendee30",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "password", "temporary": false}],
+      "realmRoles": ["ROLE_ATTENDEE"]
+    }
+  ],
+  "defaultRoles": [
+    "offline_access",
+    "uma_authorization"
+  ]
+}

@@ -17,6 +17,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
   @Id
   @Column(name = "id", nullable = false, updatable = false)

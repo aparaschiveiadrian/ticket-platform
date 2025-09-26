@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventsService } from '../services/eventsService';
 import { EventDetails as EventDetailsType } from '../services/eventsService';
-import { tokenService } from '../services/tokenService';
 import './EventDetailsPage.css';
 
 const EventDetailsPage: React.FC = () => {
@@ -19,7 +18,7 @@ const EventDetailsPage: React.FC = () => {
     }
   }, [eventId]);
 
-  const loadEventDetails = async () => {
+  const loadEventDetails = useCallback(async () => {
     if (!eventId) return;
     
     setLoading(true);
@@ -43,7 +42,7 @@ const EventDetailsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [eventId]);
 
   const handleDeleteEvent = async () => {
     if (!event || !isOwner) return;
@@ -57,6 +56,22 @@ const EventDetailsPage: React.FC = () => {
       navigate('/events');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to delete event');
+    }
+  };
+
+  const handleDeleteTicketType = async (ticketTypeId: string, ticketTypeName: string) => {
+    if (!event || !isOwner) return;
+    
+    if (!window.confirm(`Are you sure you want to delete "${ticketTypeName}" ticket type? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      await eventsService.deleteTicketType(event.id, ticketTypeId);
+      // Reload event details to reflect changes
+      loadEventDetails();
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to delete ticket type');
     }
   };
 
@@ -256,17 +271,13 @@ const EventDetailsPage: React.FC = () => {
                     <div className="ticket-actions">
                       <button 
                         className="ticket-action-btn edit-btn"
-                        onClick={() => navigate(`/events/${event.id}/ticket-types/${ticketType.id}/edit`)}
+                        onClick={() => navigate(`/events/${event.id}/edit`)}
                       >
-                        Edit
+                        Edit Event
                       </button>
                       <button 
                         className="ticket-action-btn delete-btn"
-                        onClick={() => {
-                          if (window.confirm(`Delete "${ticketType.name}" ticket type?`)) {
-                            // Handle delete
-                          }
-                        }}
+                        onClick={() => handleDeleteTicketType(ticketType.id, ticketType.name)}
                       >
                         Delete
                       </button>

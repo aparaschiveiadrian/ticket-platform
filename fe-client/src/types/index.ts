@@ -118,3 +118,46 @@ export interface PageResponse<T> {
   numberOfElements: number;
   empty: boolean;
 }
+
+export interface UpdateTicketTypeRequest {
+  id?: string;
+  name: string;
+  price: number;
+  description?: string;
+  totalAvailable: number;
+}
+
+export interface UpdateEventRequest {
+  id: string;
+  name: string;
+  start?: string;
+  end?: string;
+  location: string;
+  salesStart?: string;
+  salesEnd?: string;
+  status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'COMPLETED';
+  ticketTypes: UpdateTicketTypeRequest[];
+}
+
+export interface UpdateEventResponse {
+  id: string;
+  name: string;
+  start?: string;
+  end?: string;
+  location: string;
+  salesStart?: string;
+  salesEnd?: string;
+  status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'COMPLETED';
+  ticketTypes: UpdateTicketTypeResponse[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateTicketTypeResponse {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  totalAvailable: number;
+  eventId: string;
+}

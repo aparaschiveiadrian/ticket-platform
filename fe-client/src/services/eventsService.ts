@@ -1,5 +1,5 @@
 import apiClient from './api';
-import { Event, CreateEventRequest, CreateEventResponse, PageResponse, TicketType } from '../types';
+import { Event, CreateEventRequest, CreateEventResponse, UpdateEventRequest, PageResponse, TicketType, UpdateTicketTypeRequest } from '../types';
 
 export interface EventListParams {
   page?: number;
@@ -23,30 +23,11 @@ export interface EventDetails {
   ticketTypes: TicketType[];
 }
 
-export interface UpdateEventRequest {
-  id: string;
-  name: string;
-  start?: string;
-  end?: string;
-  location: string;
-  salesStart?: string;
-  salesEnd?: string;
-  status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'COMPLETED';
-  ticketTypes: UpdateTicketTypeRequest[];
-}
-
-export interface UpdateTicketTypeRequest {
-  id?: string;
-  name: string;
-  price: number;
-  description?: string;
-  totalAvailable: number;
-}
 
 class EventsService {
   // Get organizer's own events with pagination
   async getMyEvents(params: EventListParams = {}): Promise<PageResponse<Event>> {
-    const { page = 0, size = 8, sort = 'createdAt,desc' } = params;
+    const { page = 0, size = 6, sort = 'createdAt,desc' } = params;
     
     const response = await apiClient.get<PageResponse<Event>>('/events', {
       params: { page, size, sort }
@@ -57,7 +38,7 @@ class EventsService {
 
   // Get published events (other events) with pagination
   async getPublishedEvents(params: EventListParams = {}): Promise<PageResponse<Event>> {
-    const { page = 0, size = 8, sort = 'createdAt,desc' } = params;
+    const { page = 0, size = 6, sort = 'createdAt,desc' } = params;
     
     const response = await apiClient.get<PageResponse<Event>>('/published-events', {
       params: { page, size, sort }
@@ -68,7 +49,7 @@ class EventsService {
 
   // Search published events
   async searchPublishedEvents(query: string, params: EventListParams = {}): Promise<PageResponse<Event>> {
-    const { page = 0, size = 8, sort = 'createdAt,desc' } = params;
+    const { page = 0, size = 6, sort = 'createdAt,desc' } = params;
     
     const response = await apiClient.get<PageResponse<Event>>('/published-events', {
       params: { q: query, page, size, sort }

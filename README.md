@@ -12,7 +12,7 @@ A full-stack event management platform built with Spring Boot and React, featuri
 - [Demo Credentials](#demo-credentials)
 - [Project Structure](#project-structure)
 
-## 🎯 Project Overview
+## Project Overview
 
 The Event Ticket Platform is a modern, scalable solution for event management that serves three distinct user roles:
 
@@ -40,7 +40,7 @@ The platform implements **optimistic locking** for concurrent ticket purchases, 
 
 
 
-## ✨ Features
+## Features
 
 ### 🎪 Organizer Features
 - **Event Management**: Create, edit, delete events with comprehensive details
@@ -69,7 +69,7 @@ The platform implements **optimistic locking** for concurrent ticket purchases, 
 - **CORS Configuration**: Secure cross-origin resource sharing
 - **Input Validation**: Comprehensive request validation
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend Technologies
 
@@ -603,7 +603,7 @@ All endpoints return standardized error responses with the following format:
 | `DataIntegrityViolationException` | 400 Bad Request | Database integrity violation |
 
 
-## 🔑 Demo Credentials
+## Demo Credentials
 
 ### Organizer Account
 - **Username**: `organizer2`
@@ -620,7 +620,7 @@ All endpoints return standardized error responses with the following format:
 - **Password**: `password`
 - **Role**: `ROLE_ATTENDEE`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ticket-platform/

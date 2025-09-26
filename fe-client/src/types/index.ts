@@ -209,4 +209,5 @@ export interface GetPublishedEventDetailsTicketTypeResponse {
   name: string;
   price: number;
   description: string;
+  totalAvailable: number;
 }

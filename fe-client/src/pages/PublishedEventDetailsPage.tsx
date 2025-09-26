@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventsService } from '../services/eventsService';
 import { GetPublishedEventDetailsResponse } from '../types';
+import PurchaseModal from '../components/PurchaseModal';
 import './PublishedEventDetailsPage.css';
 
 const PublishedEventDetailsPage: React.FC = () => {
@@ -10,6 +11,19 @@ const PublishedEventDetailsPage: React.FC = () => {
   const [event, setEvent] = useState<GetPublishedEventDetailsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [purchaseModal, setPurchaseModal] = useState<{
+    isOpen: boolean;
+    ticketTypeId: string;
+    ticketTypeName: string;
+    ticketPrice: number;
+    maxAvailable: number;
+  }>({
+    isOpen: false,
+    ticketTypeId: '',
+    ticketTypeName: '',
+    ticketPrice: 0,
+    maxAvailable: 0
+  });
 
   useEffect(() => {
     if (eventId) {
@@ -53,9 +67,25 @@ const PublishedEventDetailsPage: React.FC = () => {
     navigate('/dashboard');
   };
 
-  const handlePurchaseTicket = (ticketTypeId: string) => {
-    // TODO: Implement ticket purchase functionality
-    console.log('Purchase ticket type:', ticketTypeId);
+  const handlePurchaseTicket = (ticketTypeId: string, ticketTypeName: string, ticketPrice: number, maxAvailable: number) => {
+    setPurchaseModal({
+      isOpen: true,
+      ticketTypeId,
+      ticketTypeName,
+      ticketPrice,
+      maxAvailable
+    });
+  };
+
+  const handleClosePurchaseModal = () => {
+    setPurchaseModal(prev => ({ ...prev, isOpen: false }));
+  };
+
+  const handlePurchaseSuccess = () => {
+    // Refresh event details to show updated availability
+    if (eventId) {
+      loadEventDetails();
+    }
   };
 
   if (loading) {
@@ -98,82 +128,100 @@ const PublishedEventDetailsPage: React.FC = () => {
   }
 
   return (
-    <div className="published-event-details-container">
-      <div className="event-header">
-        <button onClick={handleBackClick} className="back-button">
-          ← Back to Dashboard
-        </button>
-        <h1>{event.name}</h1>
-      </div>
+    <>
+      <div className="published-event-details-container">
+        <div className="event-header">
+          <button onClick={handleBackClick} className="back-button">
+            ← Back to Dashboard
+          </button>
+          <h1>{event.name}</h1>
+        </div>
 
-      <div className="event-content">
-        <div className="event-info">
-          <div className="event-main-info">
-            <div className="info-section">
-              <h3>Event Details</h3>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="info-label">Location:</span>
-                  <span className="info-value">{event.location}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Start:</span>
-                  <span className="info-value">{formatDate(event.start)}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">End:</span>
-                  <span className="info-value">{formatDate(event.end)}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Total Available:</span>
-                  <span className="info-value">{event.totalAvailable} tickets</span>
+        <div className="event-content">
+          <div className="event-info">
+            <div className="event-main-info">
+              <div className="info-section">
+                <h3>Event Details</h3>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="info-label">Location:</span>
+                    <span className="info-value">{event.location}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Start:</span>
+                    <span className="info-value">{formatDate(event.start)}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">End:</span>
+                    <span className="info-value">{formatDate(event.end)}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Total Available:</span>
+                    <span className="info-value">{event.totalAvailable} tickets</span>
+                  </div>
                 </div>
               </div>
+
+              {event.description && (
+                <div className="info-section">
+                  <h3>Description</h3>
+                  <p className="event-description">{event.description}</p>
+                </div>
+              )}
             </div>
 
-            {event.description && (
-              <div className="info-section">
-                <h3>Description</h3>
-                <p className="event-description">{event.description}</p>
-              </div>
-            )}
-          </div>
-
-          <div className="ticket-types-section">
-            <h3>Available Ticket Types</h3>
-            {event.ticketTypes.length === 0 ? (
-              <div className="empty-state">
-                <p>No ticket types available for this event.</p>
-              </div>
-            ) : (
-              <div className="ticket-types-grid">
-                {event.ticketTypes.map((ticketType) => (
-                  <div key={ticketType.id} className="ticket-type-card">
-                    <div className="ticket-type-header">
-                      <h4 className="ticket-type-name">{ticketType.name}</h4>
-                      <div className="ticket-type-price">
-                        {formatPrice(ticketType.price)}
+            <div className="ticket-types-section">
+              <h3>Available Ticket Types</h3>
+              {event.ticketTypes.length === 0 ? (
+                <div className="empty-state">
+                  <p>No ticket types available for this event.</p>
+                </div>
+              ) : (
+                <div className="ticket-types-grid">
+                  {event.ticketTypes.map((ticketType) => (
+                    <div key={ticketType.id} className="ticket-type-card">
+                      <div className="ticket-type-header">
+                        <h4 className="ticket-type-name">{ticketType.name}</h4>
+                        <div className="ticket-type-price">
+                          {formatPrice(ticketType.price)}
+                        </div>
                       </div>
+                      
+                      {ticketType.description && (
+                        <p className="ticket-type-description">{ticketType.description}</p>
+                      )}
+                      
+                      <div className="ticket-availability">
+                        <span className="availability-label">Available:</span>
+                        <span className="availability-count">{ticketType.totalAvailable} tickets</span>
+                      </div>
+                      
+                      <button 
+                        className="purchase-btn"
+                        onClick={() => handlePurchaseTicket(ticketType.id, ticketType.name, ticketType.price, ticketType.totalAvailable)}
+                      >
+                        Purchase Ticket
+                      </button>
                     </div>
-                    
-                    {ticketType.description && (
-                      <p className="ticket-type-description">{ticketType.description}</p>
-                    )}
-                    
-                    <button 
-                      className="purchase-btn"
-                      onClick={() => handlePurchaseTicket(ticketType.id)}
-                    >
-                      Purchase Ticket
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <PurchaseModal
+        isOpen={purchaseModal.isOpen}
+        onClose={handleClosePurchaseModal}
+        eventId={eventId || ''}
+        ticketTypeId={purchaseModal.ticketTypeId}
+        ticketTypeName={purchaseModal.ticketTypeName}
+        ticketPrice={purchaseModal.ticketPrice}
+        maxAvailable={purchaseModal.maxAvailable}
+        onPurchaseSuccess={handlePurchaseSuccess}
+      />
+    </>
   );
 };
 

@@ -9,14 +9,39 @@ export interface User {
 export interface Event {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   location: string;
-  eventStart: string;
-  eventEnd: string;
-  salesStart: string;
-  salesEnd: string;
+  start: string;
+  end: string;
+  salesStart?: string;
+  salesEnd?: string;
   status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'COMPLETED';
   organizerId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateEventRequest {
+  name: string;
+  start?: string;
+  end?: string;
+  location: string;
+  salesStart?: string;
+  salesEnd?: string;
+  status: 'DRAFT' | 'PUBLISHED';
+  ticketTypeRequestList: CreateTicketTypeRequest[];
+}
+
+export interface CreateEventResponse {
+  id: string;
+  name: string;
+  start?: string;
+  end?: string;
+  location: string;
+  salesStart?: string;
+  salesEnd?: string;
+  status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'COMPLETED';
+  ticketTypes: CreateTicketTypeResponse[];
   createdAt: string;
   updatedAt: string;
 }
@@ -24,13 +49,29 @@ export interface Event {
 export interface TicketType {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   price: number;
   totalAvailable: number;
   eventId: string;
   createdAt: string;
   updatedAt: string;
   version: number;
+}
+
+export interface CreateTicketTypeRequest {
+  name: string;
+  price: number;
+  description?: string;
+  totalAvailable: number;
+}
+
+export interface CreateTicketTypeResponse {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  totalAvailable: number;
+  eventId: string;
 }
 
 export interface Ticket {

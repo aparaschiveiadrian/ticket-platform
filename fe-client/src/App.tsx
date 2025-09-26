@@ -9,6 +9,7 @@ import EventDetailsPage from './pages/EventDetailsPage';
 import EditEventPage from './pages/EditEventPage';
 import AttendeeLandingPage from './pages/AttendeeLandingPage';
 import PublishedEventDetailsPage from './pages/PublishedEventDetailsPage';
+import TicketDetailsPage from './pages/TicketDetailsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Layout from './components/Layout';
@@ -88,6 +89,18 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <PublishedEventDetailsPage />
+                </Layout>
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Ticket Details Route for Attendees */}
+          <Route 
+            path="/tickets/:ticketId" 
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <TicketDetailsPage />
                 </Layout>
               </ProtectedRoute>
             } 

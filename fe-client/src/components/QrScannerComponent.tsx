@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import './QrScannerComponent.css';
 

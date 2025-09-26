@@ -6,6 +6,7 @@ import OrganizerLandingPage from './pages/OrganizerLandingPage';
 import CreateEventPage from './pages/CreateEventPage';
 import BrowseEventsPage from './pages/BrowseEventsPage';
 import EventDetailsPage from './pages/EventDetailsPage';
+import EditEventPage from './pages/EditEventPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { authService } from './services/authService';
 import { tokenService } from './services/tokenService';
@@ -51,6 +52,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <EventDetailsPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/events/:eventId/edit" 
+            element={
+              <ProtectedRoute>
+                {tokenService.isOrganizer() ? <EditEventPage /> : <Navigate to="/dashboard" replace />}
               </ProtectedRoute>
             } 
           />

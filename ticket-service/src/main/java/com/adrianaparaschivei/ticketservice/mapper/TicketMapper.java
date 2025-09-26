@@ -15,6 +15,7 @@ import org.mapstruct.ReportingPolicy;
 public interface TicketMapper {
   ListTicketTicketTypeResponseDto toListTicketTicketTypeResponseDto(TicketType ticketType);
 
+  @Mapping(target = "eventName" , source = "ticket.ticketType.event.name")
   ListTicketResponseDto toListTicketResponseDto(Ticket ticket);
 
   @Mapping(target = "price" , source = "ticket.ticketType.price")

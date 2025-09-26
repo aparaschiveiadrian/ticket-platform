@@ -1,3 +1,14 @@
 .App {
   min-height: 100vh;
 }
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-content {
+  flex: 1;
+  background-color: var(--bg-light);
+}

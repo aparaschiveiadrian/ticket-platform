@@ -161,3 +161,52 @@ export interface UpdateTicketTypeResponse {
   totalAvailable: number;
   eventId: string;
 }
+
+// Ticket related types for attendees
+export interface ListTicketResponse {
+  id: string;
+  status: 'PURCHASED' | 'CANCELLED';
+  ticketType: ListTicketTicketTypeResponse;
+}
+
+export interface ListTicketTicketTypeResponse {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export interface PurchaseTicketsResponse {
+  ticketTypeId: string;
+  quantity: number;
+  ticketIds: string[];
+}
+
+export interface GetTicketResponse {
+  id: string;
+  status: 'PURCHASED' | 'CANCELLED';
+  price: number;
+  description?: string;
+  eventName: string;
+  location: string;
+  eventStart: string;
+  eventEnd: string;
+}
+
+// Published event details for attendees
+export interface GetPublishedEventDetailsResponse {
+  id: string;
+  name: string;
+  start: string;
+  end: string;
+  location: string;
+  description: string;
+  totalAvailable: number;
+  ticketTypes: GetPublishedEventDetailsTicketTypeResponse[];
+}
+
+export interface GetPublishedEventDetailsTicketTypeResponse {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+}

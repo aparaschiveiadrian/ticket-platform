@@ -7,7 +7,11 @@ import CreateEventPage from './pages/CreateEventPage';
 import BrowseEventsPage from './pages/BrowseEventsPage';
 import EventDetailsPage from './pages/EventDetailsPage';
 import EditEventPage from './pages/EditEventPage';
+import AttendeeLandingPage from './pages/AttendeeLandingPage';
+import PublishedEventDetailsPage from './pages/PublishedEventDetailsPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import Navbar from './components/Navbar';
+import Layout from './components/Layout';
 import { authService } from './services/authService';
 import { tokenService } from './services/tokenService';
 import './App.css';
@@ -24,7 +28,11 @@ function App() {
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                {tokenService.isOrganizer() ? <OrganizerLandingPage /> : <Dashboard />}
+                <Layout>
+                  {tokenService.isOrganizer() ? <OrganizerLandingPage /> : 
+                   tokenService.isAttendee() ? <AttendeeLandingPage /> : 
+                   <Dashboard />}
+                </Layout>
               </ProtectedRoute>
             } 
           />
@@ -33,7 +41,9 @@ function App() {
             path="/events/create" 
             element={
               <ProtectedRoute>
-                {tokenService.isOrganizer() ? <CreateEventPage /> : <Navigate to="/dashboard" replace />}
+                <Layout>
+                  {tokenService.isOrganizer() ? <CreateEventPage /> : <Navigate to="/dashboard" replace />}
+                </Layout>
               </ProtectedRoute>
             } 
           />
@@ -42,7 +52,9 @@ function App() {
             path="/events" 
             element={
               <ProtectedRoute>
-                {tokenService.isOrganizer() ? <BrowseEventsPage /> : <Navigate to="/dashboard" replace />}
+                <Layout>
+                  {tokenService.isOrganizer() ? <BrowseEventsPage /> : <Navigate to="/dashboard" replace />}
+                </Layout>
               </ProtectedRoute>
             } 
           />
@@ -51,7 +63,9 @@ function App() {
             path="/events/:eventId" 
             element={
               <ProtectedRoute>
-                <EventDetailsPage />
+                <Layout>
+                  <EventDetailsPage />
+                </Layout>
               </ProtectedRoute>
             } 
           />
@@ -60,7 +74,21 @@ function App() {
             path="/events/:eventId/edit" 
             element={
               <ProtectedRoute>
-                {tokenService.isOrganizer() ? <EditEventPage /> : <Navigate to="/dashboard" replace />}
+                <Layout>
+                  {tokenService.isOrganizer() ? <EditEventPage /> : <Navigate to="/dashboard" replace />}
+                </Layout>
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Published Event Details Route for Attendees */}
+          <Route 
+            path="/published-events/:eventId" 
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PublishedEventDetailsPage />
+                </Layout>
               </ProtectedRoute>
             } 
           />

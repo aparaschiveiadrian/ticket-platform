@@ -49,7 +49,7 @@ class EventsService {
 
   // Search published events
   async searchPublishedEvents(query: string, params: EventListParams = {}): Promise<PageResponse<Event>> {
-    const { page = 0, size = 10, sort = 'name,asc' } = params;
+    const { page = 0, size = 6, sort = 'name,asc' } = params;
     
     const response = await apiClient.get<PageResponse<Event>>('/published-events', {
       params: { q: query, page, size, sort }

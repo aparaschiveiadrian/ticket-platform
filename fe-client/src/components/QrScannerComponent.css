@@ -1,0 +1,250 @@
+.qr-scanner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.qr-scanner-modal {
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.qr-scanner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.qr-scanner-header h2 {
+  color: var(--color-primary);
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: var(--bg-light);
+  color: var(--color-primary);
+}
+
+.qr-scanner-content {
+  padding: 25px;
+}
+
+.scanner-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--bg-light);
+  border-radius: 8px;
+  border: 2px dashed var(--border-light);
+}
+
+.scanner-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.scanner-placeholder h3 {
+  color: var(--color-primary);
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.scanner-placeholder p {
+  color: var(--text-light);
+  margin: 0 0 25px 0;
+  font-size: 1rem;
+}
+
+.start-camera-btn {
+  background: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-camera-btn:hover {
+  background: var(--color-accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(190, 49, 68, 0.3);
+}
+
+.scanner-container {
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+.scanner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-frame {
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+.corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--color-accent);
+}
+
+.corner.top-left {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner.top-right {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+}
+
+.corner.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+}
+
+.corner.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+.scanner-error {
+  background: #fee;
+  color: var(--color-accent);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #fcc;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.scanner-instructions {
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.scanner-instructions h4 {
+  color: var(--color-primary);
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.scanner-instructions ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-dark);
+}
+
+.scanner-instructions li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.scanner-controls {
+  text-align: center;
+}
+
+.stop-camera-btn {
+  background: var(--bg-light);
+  color: var(--text-dark);
+  border: 1px solid var(--border-light);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.stop-camera-btn:hover {
+  background: var(--border-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .qr-scanner-overlay {
+    padding: 10px;
+  }
+  
+  .qr-scanner-modal {
+    max-width: 100%;
+  }
+  
+  .qr-scanner-header {
+    padding: 15px 20px;
+  }
+  
+  .qr-scanner-content {
+    padding: 20px;
+  }
+  
+  .scanner-frame {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .corner {
+    width: 25px;
+    height: 25px;
+    border-width: 2px;
+  }
+}

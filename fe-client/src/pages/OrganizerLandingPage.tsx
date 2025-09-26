@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { tokenService } from '../services/tokenService';
+import { organizerStatsService, OrganizerStats } from '../services/organizerStatsService';
 import './OrganizerLandingPage.css';
 
 const OrganizerLandingPage: React.FC = () => {
   const navigate = useNavigate();
   const userInfo = tokenService.getUserInfo();
+  const [stats, setStats] = useState<OrganizerStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadOrganizerStats();
+  }, []);
+
+  const loadOrganizerStats = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const organizerStats = await organizerStatsService.getOrganizerStats();
+      setStats(organizerStats);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to load statistics');
+      console.error('Error loading organizer stats:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCreateEvent = () => {
     navigate('/events/create');
@@ -52,22 +74,38 @@ const OrganizerLandingPage: React.FC = () => {
 
       <div className="organizer-stats">
         <div className="stats-container">
-          <div className="stat-card">
-            <div className="stat-number">12</div>
-            <div className="stat-label">Total Events</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-number">1,247</div>
-            <div className="stat-label">Tickets Sold</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-number">98%</div>
-            <div className="stat-label">Satisfaction Rate</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-number">€24,890</div>
-            <div className="stat-label">Total Revenue</div>
-          </div>
+          {loading ? (
+            <div className="stats-loading">
+              <div className="loading-spinner"></div>
+              <p>Loading statistics...</p>
+            </div>
+          ) : error ? (
+            <div className="stats-error">
+              <p>Failed to load statistics</p>
+              <button onClick={loadOrganizerStats} className="retry-btn">
+                Retry
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="stat-card">
+                <div className="stat-number">{stats?.totalEvents || 0}</div>
+                <div className="stat-label">Total Events</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{organizerStatsService.formatNumber(stats?.totalTicketsSold || 0)}</div>
+                <div className="stat-label">Tickets Sold</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{stats?.publishedEvents || 0}</div>
+                <div className="stat-label">Published Events</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{organizerStatsService.formatCurrency(stats?.totalRevenue || 0)}</div>
+                <div className="stat-label">Total Revenue</div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

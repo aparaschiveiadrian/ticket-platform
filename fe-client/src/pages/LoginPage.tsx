@@ -91,8 +91,28 @@ const LoginPage: React.FC = () => {
 
         <div className="login-footer">
           <p>Demo Credentials:</p>
-          <p><strong>Username:</strong> organizer2</p>
-          <p><strong>Password:</strong> password</p>
+          <div className="demo-accounts">
+            <div className="demo-account">
+              <h4>Organizer</h4>
+              <p><strong>Username:</strong> organizer2</p>
+              <p><strong>Password:</strong> password</p>
+            </div>
+            <div className="demo-account">
+              <h4>Staff</h4>
+              <p><strong>Username:</strong> staff1</p>
+              <p><strong>Password:</strong> password</p>
+            </div>
+            <div className="demo-account">
+              <h4>Attendee</h4>
+              <p><strong>Username:</strong> attendee1</p>
+              <p><strong>Password:</strong> password</p>
+            </div>
+            <div className="demo-account">
+              <h4>Attendee 2</h4>
+              <p><strong>Username:</strong> attendee2</p>
+              <p><strong>Password:</strong> password</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

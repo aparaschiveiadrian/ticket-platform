@@ -153,6 +153,7 @@ const AttendeeLandingPage: React.FC = () => {
       </div>
       
       <div className="ticket-details">
+        <div className="event-name">{ticket.eventName}</div>
         <div className="ticket-price">{formatPrice(ticket.ticketType.price)}</div>
         <div className="ticket-id">Ticket ID: {ticket.id.slice(0, 8)}...</div>
       </div>

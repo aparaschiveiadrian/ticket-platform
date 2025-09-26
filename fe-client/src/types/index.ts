@@ -166,6 +166,7 @@ export interface UpdateTicketTypeResponse {
 export interface ListTicketResponse {
   id: string;
   status: 'PURCHASED' | 'CANCELLED';
+  eventName: string;
   ticketType: ListTicketTicketTypeResponse;
 }
 

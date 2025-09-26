@@ -8,6 +8,7 @@ import BrowseEventsPage from './pages/BrowseEventsPage';
 import EventDetailsPage from './pages/EventDetailsPage';
 import EditEventPage from './pages/EditEventPage';
 import AttendeeLandingPage from './pages/AttendeeLandingPage';
+import StaffLandingPage from './pages/StaffLandingPage';
 import PublishedEventDetailsPage from './pages/PublishedEventDetailsPage';
 import TicketDetailsPage from './pages/TicketDetailsPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -32,6 +33,7 @@ function App() {
                 <Layout>
                   {tokenService.isOrganizer() ? <OrganizerLandingPage /> : 
                    tokenService.isAttendee() ? <AttendeeLandingPage /> : 
+                   tokenService.isStaff() ? <StaffLandingPage /> :
                    <Dashboard />}
                 </Layout>
               </ProtectedRoute>

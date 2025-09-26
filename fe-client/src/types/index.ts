@@ -212,3 +212,18 @@ export interface GetPublishedEventDetailsTicketTypeResponse {
   description: string;
   totalAvailable: number;
 }
+
+// Ticket validation types for staff
+export interface TicketValidationRequest {
+  id: string;
+  method: 'MANUAL' | 'QR_SCAN';
+}
+
+export interface TicketValidationResponse {
+  id: string;
+  status: 'VALID' | 'INVALID' | 'EXPIRED';
+  validationMethod: 'QR_SCAN' | 'MANUAL';
+  ticketId: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -31,7 +31,7 @@ public class TicketController {
   private final QrCodeService qrCodeService;
 
   @GetMapping
-  public ResponseEntity<Page<ListTicketResponseDto>> listTickers(
+  public ResponseEntity<Page<ListTicketResponseDto>> listTickets(
       @AuthenticationPrincipal Jwt jwt, Pageable pageable) {
     Page<ListTicketResponseDto> dtoPage =
         ticketService

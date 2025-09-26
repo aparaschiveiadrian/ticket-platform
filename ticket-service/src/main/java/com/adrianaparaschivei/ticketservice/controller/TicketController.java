@@ -1,6 +1,7 @@
 package com.adrianaparaschivei.ticketservice.controller;
 
 import com.adrianaparaschivei.ticketservice.mapper.TicketMapper;
+import com.adrianaparaschivei.ticketservice.model.dto.GetTicketResponseDto;
 import com.adrianaparaschivei.ticketservice.model.dto.ListTicketResponseDto;
 import com.adrianaparaschivei.ticketservice.service.QrCodeService;
 import com.adrianaparaschivei.ticketservice.service.TicketService;
@@ -41,10 +42,10 @@ public class TicketController {
   }
 
   @GetMapping("/{ticketId}")
-  public ResponseEntity<ListTicketResponseDto> getTicket(
+  public ResponseEntity<GetTicketResponseDto> getTicket(
       @AuthenticationPrincipal Jwt jwt, @PathVariable UUID ticketId) {
     return ResponseEntity.ok(
-        ticketMapper.toListTicketResponseDto(
+        ticketMapper.toGetTicketResponseDto(
             ticketService.getTicketForUser(parseUserId(jwt), ticketId)));
   }
 

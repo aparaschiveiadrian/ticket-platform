@@ -16,13 +16,13 @@ const isPublishedEventDetails = (event: EventData): event is GetPublishedEventDe
   return 'totalAvailable' in event && !('status' in event);
 };
 
-// Ticket type type guards
+// Ticket type type guards - now both types have totalAvailable
 const isTicketType = (ticketType: TicketType | GetPublishedEventDetailsTicketTypeResponse): ticketType is TicketType => {
-  return 'totalAvailable' in ticketType;
+  return 'eventId' in ticketType && 'createdAt' in ticketType;
 };
 
 const isPublishedTicketType = (ticketType: TicketType | GetPublishedEventDetailsTicketTypeResponse): ticketType is GetPublishedEventDetailsTicketTypeResponse => {
-  return !('totalAvailable' in ticketType);
+  return !('eventId' in ticketType);
 };
 
 const EventDetailsPage: React.FC = () => {
@@ -293,20 +293,20 @@ const EventDetailsPage: React.FC = () => {
                     <p className="ticket-description">{ticketType.description}</p>
                   )}
                   
-                  {isEventDetails(event) && isTicketType(ticketType) && (
-                    <div className="ticket-stats">
-                      <div className="stat-item">
-                        <span className="stat-label">Available:</span>
-                        <span className="stat-value">{ticketType.totalAvailable}</span>
-                      </div>
+                  <div className="ticket-stats">
+                    <div className="stat-item">
+                      <span className="stat-label">Available:</span>
+                      <span className="stat-value">{ticketType.totalAvailable}</span>
+                    </div>
+                    {isEventDetails(event) && isTicketType(ticketType) && (
                       <div className="stat-item">
                         <span className="stat-label">Sold:</span>
                         <span className="stat-value">
                           {ticketType.totalAvailable - (ticketType.totalAvailable - 0)} {/* This would need actual sold count from backend */}
                         </span>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   
                   {isOwner && (
                     <div className="ticket-actions">

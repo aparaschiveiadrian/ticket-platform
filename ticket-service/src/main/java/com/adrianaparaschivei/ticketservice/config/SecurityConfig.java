@@ -25,7 +25,7 @@ public class SecurityConfig {
     configuration.setAllowedHeaders(Arrays.asList("*"));
     configuration.setAllowCredentials(true);
     configuration.setMaxAge(3600L);
-    
+
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/api/**", configuration);
     return source;
@@ -33,35 +33,37 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(
-      HttpSecurity http,
-      UserProvisioningFilter userProvisioningFilter,
-      JwtAuthConverter jwtAuthConverter)
-      throws Exception {
+          HttpSecurity http,
+          UserProvisioningFilter userProvisioningFilter,
+          JwtAuthConverter jwtAuthConverter)
+          throws Exception {
     // all requests should be authenticated
     http.authorizeHttpRequests(
-            authorize ->
-                authorize
-                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**")
-                    .permitAll()
-                    .requestMatchers("/api/v1/events")
-                    .hasRole("ORGANIZER")
-                    .requestMatchers("/api/v1/ticket-validations/**")
-                    .hasRole("STAFF")
+                    authorize ->
+                            authorize
+                                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**")
+                                    .permitAll()
+                                    .requestMatchers("/api/v1/events")
+                                    .hasRole("ORGANIZER")
+                                    .requestMatchers("/api/v1/ticket-validations/**")
+                                    .hasRole("STAFF")
+                                    .requestMatchers("/api/v1/organizers/stats/")
+                                    .hasRole("ORGANIZER")
 
-                    // catch-all: any other request must be authenticated
-                    .anyRequest()
-                    .authenticated())
-        // no CSRF protection because we use JWT tokens(stateless), so no need for it since no
-        // sessions
-        .csrf(csrf -> csrf.disable())
-        // enable CORS
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        // make sure we use stateless session, session won't be used to store user's state.
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .oauth2ResourceServer(
-            oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
-        .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
+                                    // catch-all: any other request must be authenticated
+                                    .anyRequest()
+                                    .authenticated())
+            // no CSRF protection because we use JWT tokens(stateless), so no need for it since no
+            // sessions
+            .csrf(csrf -> csrf.disable())
+            // enable CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            // make sure we use stateless session, session won't be used to store user's state.
+            .sessionManagement(
+                    session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .oauth2ResourceServer(
+                    oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
+            .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
     return http.build();
   }
 }

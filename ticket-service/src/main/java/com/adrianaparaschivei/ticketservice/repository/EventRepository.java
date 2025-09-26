@@ -35,4 +35,11 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
   Page<Event> searchEvents(@Param("searchTerm") String searchTerm, Pageable pageable);
 
   Optional<Event> findByIdAndStatus(UUID id, EventStatusEnum status);
+
+  // methods for the organizer status dashboard
+  @Query("SELECT COUNT(e) FROM Event e WHERE e.organizer.id = :organizerId")
+  int countByOrganizerId(@Param("organizerId") UUID organizerId);
+  
+  @Query("SELECT COUNT(e) FROM Event e WHERE e.organizer.id = :organizerId AND e.status = :status")
+  int countByOrganizerIdAndStatus(@Param("organizerId") UUID organizerId, @Param("status") EventStatusEnum status);
 }

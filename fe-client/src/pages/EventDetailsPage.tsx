@@ -2,12 +2,33 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventsService } from '../services/eventsService';
 import { EventDetails as EventDetailsType } from '../services/eventsService';
+import { GetPublishedEventDetailsResponse, TicketType, GetPublishedEventDetailsTicketTypeResponse } from '../types';
 import './EventDetailsPage.css';
+
+type EventData = EventDetailsType | GetPublishedEventDetailsResponse;
+
+// Type guards
+const isEventDetails = (event: EventData): event is EventDetailsType => {
+  return 'status' in event && 'organizerId' in event && 'createdAt' in event;
+};
+
+const isPublishedEventDetails = (event: EventData): event is GetPublishedEventDetailsResponse => {
+  return 'totalAvailable' in event && !('status' in event);
+};
+
+// Ticket type type guards
+const isTicketType = (ticketType: TicketType | GetPublishedEventDetailsTicketTypeResponse): ticketType is TicketType => {
+  return 'totalAvailable' in ticketType;
+};
+
+const isPublishedTicketType = (ticketType: TicketType | GetPublishedEventDetailsTicketTypeResponse): ticketType is GetPublishedEventDetailsTicketTypeResponse => {
+  return !('totalAvailable' in ticketType);
+};
 
 const EventDetailsPage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
-  const [event, setEvent] = useState<EventDetailsType | null>(null);
+  const [event, setEvent] = useState<EventData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isOwner, setIsOwner] = useState(false);
@@ -26,7 +47,7 @@ const EventDetailsPage: React.FC = () => {
     
     try {
       // Try to get as owner first, fallback to public view
-      let eventData: EventDetailsType;
+      let eventData: EventData;
       try {
         eventData = await eventsService.getEventDetails(eventId);
         setIsOwner(true);
@@ -148,10 +169,18 @@ const EventDetailsPage: React.FC = () => {
         <div className="event-header-content">
           <div className="event-title-section">
             <h1>{event.name}</h1>
-            <div className={`event-status ${getStatusColor(event.status)}`}>
-              <span className="status-icon">{getStatusIcon(event.status)}</span>
-              {event.status}
-            </div>
+            {isEventDetails(event) && (
+              <div className={`event-status ${getStatusColor(event.status)}`}>
+                <span className="status-icon">{getStatusIcon(event.status)}</span>
+                {event.status}
+              </div>
+            )}
+            {isPublishedEventDetails(event) && (
+              <div className="event-status status-published">
+                <span className="status-icon">✅</span>
+                PUBLISHED
+              </div>
+            )}
           </div>
           
           {isOwner && (
@@ -194,26 +223,36 @@ const EventDetailsPage: React.FC = () => {
                   <span className="info-value">{formatDate(event.end)}</span>
                 </div>
               )}
-              {event.salesStart && (
+              {isEventDetails(event) && event.salesStart && (
                 <div className="info-item">
                   <span className="info-label">Sales Start</span>
                   <span className="info-value">{formatDate(event.salesStart)}</span>
                 </div>
               )}
-              {event.salesEnd && (
+              {isEventDetails(event) && event.salesEnd && (
                 <div className="info-item">
                   <span className="info-label">Sales End</span>
                   <span className="info-value">{formatDate(event.salesEnd)}</span>
                 </div>
               )}
-              <div className="info-item">
-                <span className="info-label">Created</span>
-                <span className="info-value">{formatDate(event.createdAt)}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Last Updated</span>
-                <span className="info-value">{formatDate(event.updatedAt)}</span>
-              </div>
+              {isPublishedEventDetails(event) && (
+                <div className="info-item">
+                  <span className="info-label">Total Available</span>
+                  <span className="info-value">{event.totalAvailable} tickets</span>
+                </div>
+              )}
+              {isEventDetails(event) && (
+                <>
+                  <div className="info-item">
+                    <span className="info-label">Created</span>
+                    <span className="info-value">{formatDate(event.createdAt)}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Last Updated</span>
+                    <span className="info-value">{formatDate(event.updatedAt)}</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -254,18 +293,20 @@ const EventDetailsPage: React.FC = () => {
                     <p className="ticket-description">{ticketType.description}</p>
                   )}
                   
-                  <div className="ticket-stats">
-                    <div className="stat-item">
-                      <span className="stat-label">Available:</span>
-                      <span className="stat-value">{ticketType.totalAvailable}</span>
+                  {isEventDetails(event) && isTicketType(ticketType) && (
+                    <div className="ticket-stats">
+                      <div className="stat-item">
+                        <span className="stat-label">Available:</span>
+                        <span className="stat-value">{ticketType.totalAvailable}</span>
+                      </div>
+                      <div className="stat-item">
+                        <span className="stat-label">Sold:</span>
+                        <span className="stat-value">
+                          {ticketType.totalAvailable - (ticketType.totalAvailable - 0)} {/* This would need actual sold count from backend */}
+                        </span>
+                      </div>
                     </div>
-                    <div className="stat-item">
-                      <span className="stat-label">Sold:</span>
-                      <span className="stat-value">
-                        {ticketType.totalAvailable - (ticketType.totalAvailable - 0)} {/* This would need actual sold count from backend */}
-                      </span>
-                    </div>
-                  </div>
+                  )}
                   
                   {isOwner && (
                     <div className="ticket-actions">

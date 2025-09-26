@@ -1,5 +1,5 @@
 import apiClient from './api';
-import { Event, CreateEventRequest, CreateEventResponse, UpdateEventRequest, PageResponse, TicketType, UpdateTicketTypeRequest } from '../types';
+import { Event, CreateEventRequest, CreateEventResponse, UpdateEventRequest, PageResponse, TicketType, UpdateTicketTypeRequest, GetPublishedEventDetailsResponse } from '../types';
 
 export interface EventListParams {
   page?: number;
@@ -49,7 +49,7 @@ class EventsService {
 
   // Search published events
   async searchPublishedEvents(query: string, params: EventListParams = {}): Promise<PageResponse<Event>> {
-    const { page = 0, size = 6, sort = 'createdAt,desc' } = params;
+    const { page = 0, size = 10, sort = 'name,asc' } = params;
     
     const response = await apiClient.get<PageResponse<Event>>('/published-events', {
       params: { q: query, page, size, sort }
@@ -65,8 +65,8 @@ class EventsService {
   }
 
   // Get published event details (public view)
-  async getPublishedEventDetails(eventId: string): Promise<EventDetails> {
-    const response = await apiClient.get<EventDetails>(`/published-events/${eventId}`);
+  async getPublishedEventDetails(eventId: string): Promise<GetPublishedEventDetailsResponse> {
+    const response = await apiClient.get<GetPublishedEventDetailsResponse>(`/published-events/${eventId}`);
     return response.data;
   }
 

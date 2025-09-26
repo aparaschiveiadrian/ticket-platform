@@ -62,6 +62,11 @@ export const tokenService = {
     return roles.includes('ROLE_STAFF');
   },
 
+  isAttendee(): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes('ROLE_ATTENDEE');
+  },
+
   getUserInfo(): { name: string; email: string; username: string } | null {
     const token = this.getDecodedToken();
     if (!token) return null;

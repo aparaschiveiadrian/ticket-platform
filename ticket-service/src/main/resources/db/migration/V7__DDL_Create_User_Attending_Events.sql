@@ -8,3 +8,4 @@ CREATE TABLE IF NOT EXISTS user_attending_events (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES events(id)
 );
+

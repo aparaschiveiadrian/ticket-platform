@@ -11,3 +11,4 @@ CREATE TABLE IF NOT EXISTS tickets (
     FOREIGN KEY (ticket_type_id) REFERENCES ticket_types(id),
     FOREIGN KEY (purchaser_id) REFERENCES users(id)
 );
+

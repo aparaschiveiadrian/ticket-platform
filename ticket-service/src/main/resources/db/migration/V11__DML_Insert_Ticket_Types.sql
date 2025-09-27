@@ -49,3 +49,4 @@ INSERT INTO ticket_types (id, name, description, price, total_available, event_i
     ('770e8400-e29b-41d4-a716-446655440020', 'Spectator', 'Watch the tournament and visit gaming booths', 20.00, 200, '660e8400-e29b-41d4-a716-446655440010', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
     ('770e8400-e29b-41d4-a716-446655440021', 'Participant', 'Enter the tournament and compete for prizes', 50.00, 100, '660e8400-e29b-41d4-a716-446655440010', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0),
     ('770e8400-e29b-41d4-a716-446655440022', 'VIP Experience', 'Includes tournament entry, premium seating, and merchandise', 100.00, 25, '660e8400-e29b-41d4-a716-446655440010', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+

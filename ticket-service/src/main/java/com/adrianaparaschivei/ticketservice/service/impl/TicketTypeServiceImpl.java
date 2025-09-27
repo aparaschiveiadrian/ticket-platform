@@ -1,5 +1,6 @@
 package com.adrianaparaschivei.ticketservice.service.impl;
 
+import com.adrianaparaschivei.ticketservice.controller.PublishedEventSseController;
 import com.adrianaparaschivei.ticketservice.exception.ConcurrentTicketPurchaseException;
 import com.adrianaparaschivei.ticketservice.exception.TicketTypeNotFoundException;
 import com.adrianaparaschivei.ticketservice.exception.TicketsSoldOutException;
@@ -112,6 +113,16 @@ public class TicketTypeServiceImpl implements TicketTypeService {
         var saved = ticketRepository.saveAll(tickets);
         saved.forEach(qrCodeService::generateQrCodeForTicket);
         var ticketIds = saved.stream().map(Ticket::getId).toList();
+        //get updated ticket type to get new available quantity
+        TicketType updatedTicketType = ticketTypeRepository.findById(ticketTypeId)
+                .orElseThrow(() -> new TicketTypeNotFoundException("Ticket type not found!"));
+        //make the broadcast update for the sse opened connections
+        PublishedEventSseController.broadcastTicketUpdate(
+                updatedTicketType.getEvent().getId(),
+                ticketTypeId,
+                updatedTicketType.getTotalAvailable()
+        );
+
         return new PurchaseTicketsResponseDto(ticketTypeId, quantity, ticketIds);
       }
 

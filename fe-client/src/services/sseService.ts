@@ -1,9 +1,11 @@
 //SSE service for real time update of ticket types quanitiy
 class SSEService {
     private eventSource: EventSource | null = null;
+    private connectionCallbacks: (() => void)[] = [];
 
-    connect(eventId: string, onTicketUpdate: (ticketTypeId: string, newQuantity: number) => void) {
-        const url = `${process.env.REACT_APP_API_URL || 'http://localhost:8080'}/api/v1/published-events/${eventId}/sse`;
+    connect(eventId: string, onTicketUpdate: (ticketTypeId: string, newQuantity: number) => void, onConnected?: () => void) {
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+        const url = `${baseUrl}/api/v1/published-events/${eventId}/sse`;
 
         // deletes existing connection if existing
         this.disconnect();
@@ -11,7 +13,17 @@ class SSEService {
         this.eventSource = new EventSource(url);
 
         this.eventSource.addEventListener('connected', (event) => {
-            console.log( event.data);
+            console.log('SSE connected:', event.data);
+        });
+
+        this.eventSource.addEventListener('ready', (event) => {
+            console.log('SSE ready:', event.data);
+            if (onConnected) {
+                onConnected();
+            }
+            // Call all registered connection callbacks
+            this.connectionCallbacks.forEach(callback => callback());
+            this.connectionCallbacks = [];
         });
 
         this.eventSource.addEventListener('ticket-update', (event) => {
@@ -19,12 +31,14 @@ class SSEService {
                 const update = JSON.parse(event.data);
                 onTicketUpdate(update.ticketTypeId, update.newQuantity);
             } catch (error) {
-                console.error('Error updating ticketType');
+                console.error('Error parsing ticket update:', error);
             }
         });
 
         this.eventSource.onerror = (error) => {
-            console.error('SSE connection error');
+            console.error('SSE connection error:', error);
+            console.log('SSE connection state:', this.getConnectionState());
+            console.log('SSE readyState:', this.eventSource?.readyState);
         };
     }
 
@@ -48,6 +62,26 @@ class SSEService {
             case EventSource.CLOSED: return 'CLOSED';
             default: return 'UNKNOWN';
         }
+    }
+
+    waitForConnection(): Promise<void> {
+        return new Promise((resolve) => {
+            if (this.isConnected()) {
+                resolve();
+                return;
+            }
+            
+            this.connectionCallbacks.push(resolve);
+            
+            // Timeout after 5 seconds
+            setTimeout(() => {
+                const index = this.connectionCallbacks.indexOf(resolve);
+                if (index > -1) {
+                    this.connectionCallbacks.splice(index, 1);
+                }
+                resolve(); // Resolve anyway to not block the UI
+            }, 5000);
+        });
     }
 }
 

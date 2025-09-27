@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventsService } from '../services/eventsService';
+import { sseService } from '../services/sseService';
 import { GetPublishedEventDetailsResponse } from '../types';
 import PurchaseModal from '../components/PurchaseModal';
 import './PublishedEventDetailsPage.css';
@@ -11,6 +12,9 @@ const PublishedEventDetailsPage: React.FC = () => {
   const [event, setEvent] = useState<GetPublishedEventDetailsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [realTimeQuantities, setRealTimeQuantities] = useState<Map<string, number>>(new Map());
+  const [sseConnected, setSseConnected] = useState(false);
+  const [sseReady, setSseReady] = useState(false);
   const [purchaseModal, setPurchaseModal] = useState<{
     isOpen: boolean;
     ticketTypeId: string;
@@ -25,11 +29,56 @@ const PublishedEventDetailsPage: React.FC = () => {
     maxAvailable: 0
   });
 
+  const handleTicketUpdate = useCallback((ticketTypeId: string, newQuantity: number) => {
+    setRealTimeQuantities(prev => {
+      const newMap = new Map(prev);
+      newMap.set(ticketTypeId, newQuantity);
+      return newMap;
+    });
+  }, []);
+
+  const getCurrentQuantity = useCallback((ticketTypeId: string, originalQuantity: number): number => {
+    return realTimeQuantities.get(ticketTypeId) ?? originalQuantity;
+  }, [realTimeQuantities]);
+
   useEffect(() => {
     if (eventId) {
       loadEventDetails();
+      
+      // Connect to SSE with better state management
+      const connectToSSE = async () => {
+        try {
+          sseService.connect(eventId, handleTicketUpdate, () => {
+            setSseConnected(true);
+            setSseReady(true);
+            console.log('SSE is ready for real-time updates');
+          });
+          
+          // Wait for connection to be established
+          await sseService.waitForConnection();
+          
+        } catch (error) {
+          console.error('Failed to connect to SSE:', error);
+          setSseConnected(false);
+          setSseReady(false);
+        }
+      };
+      
+      connectToSSE();
+      
+      // Periodic connection state check
+      const connectionCheckInterval = setInterval(() => {
+        setSseConnected(sseService.isConnected());
+      }, 5000);
+      
+      return () => {
+        clearInterval(connectionCheckInterval);
+        sseService.disconnect();
+        setSseConnected(false);
+        setSseReady(false);
+      };
     }
-  }, [eventId]);
+  }, [eventId, handleTicketUpdate]);
 
   const loadEventDetails = async () => {
     if (!eventId) return;
@@ -39,6 +88,11 @@ const PublishedEventDetailsPage: React.FC = () => {
       setError(null);
       const eventData = await eventsService.getPublishedEventDetails(eventId);
       setEvent(eventData);
+      
+      const initialQuantities = new Map(
+        eventData.ticketTypes.map(tt => [tt.id, tt.totalAvailable])
+      );
+      setRealTimeQuantities(initialQuantities);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to load event details');
     } finally {
@@ -82,10 +136,7 @@ const PublishedEventDetailsPage: React.FC = () => {
   };
 
   const handlePurchaseSuccess = () => {
-    // Refresh event details to show updated availability
-    if (eventId) {
-      loadEventDetails();
-    }
+    handleClosePurchaseModal();
   };
 
   if (loading) {
@@ -130,6 +181,16 @@ const PublishedEventDetailsPage: React.FC = () => {
   return (
     <>
       <div className="published-event-details-container">
+        <div className="connection-status">
+          {sseReady ? (
+            <span className="status-connected">🟢 Live updates active</span>
+          ) : sseConnected ? (
+            <span className="status-connecting">🟡 Setting up live updates...</span>
+          ) : (
+            <span className="status-disconnected">🔴 Connecting to live updates...</span>
+          )}
+        </div>
+        
         <div className="event-header">
           <button onClick={handleBackClick} className="back-button">
             ← Back to Dashboard
@@ -178,32 +239,38 @@ const PublishedEventDetailsPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="ticket-types-grid">
-                  {event.ticketTypes.map((ticketType) => (
-                    <div key={ticketType.id} className="ticket-type-card">
-                      <div className="ticket-type-header">
-                        <h4 className="ticket-type-name">{ticketType.name}</h4>
-                        <div className="ticket-type-price">
-                          {formatPrice(ticketType.price)}
+                  {event.ticketTypes.map((ticketType) => {
+                    const currentQuantity = getCurrentQuantity(ticketType.id, ticketType.totalAvailable);
+                    
+                    return (
+                      <div key={ticketType.id} className="ticket-type-card">
+                        <div className="ticket-type-header">
+                          <h4 className="ticket-type-name">{ticketType.name}</h4>
+                          <div className="ticket-type-price">
+                            {formatPrice(ticketType.price)}
+                          </div>
                         </div>
+                        
+                        {ticketType.description && (
+                          <p className="ticket-type-description">{ticketType.description}</p>
+                        )}
+                        
+                        <div className="ticket-availability">
+                          <span className="availability-label">Available:</span>
+                          <span className="availability-count">{currentQuantity} tickets</span>
+                        </div>
+                        
+                        <button 
+                          className="purchase-btn"
+                          disabled={currentQuantity === 0 || !sseReady}
+                          onClick={() => handlePurchaseTicket(ticketType.id, ticketType.name, ticketType.price, currentQuantity)}
+                          title={!sseReady ? "Setting up real-time updates..." : currentQuantity === 0 ? "Sold out" : "Purchase tickets"}
+                        >
+                          {currentQuantity === 0 ? 'Sold Out' : 'Purchase Ticket'}
+                        </button>
                       </div>
-                      
-                      {ticketType.description && (
-                        <p className="ticket-type-description">{ticketType.description}</p>
-                      )}
-                      
-                      <div className="ticket-availability">
-                        <span className="availability-label">Available:</span>
-                        <span className="availability-count">{ticketType.totalAvailable} tickets</span>
-                      </div>
-                      
-                      <button 
-                        className="purchase-btn"
-                        onClick={() => handlePurchaseTicket(ticketType.id, ticketType.name, ticketType.price, ticketType.totalAvailable)}
-                      >
-                        Purchase Ticket
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

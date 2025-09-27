@@ -136,6 +136,16 @@ All endpoints (except published events) require JWT authentication via Keycloak.
 
 **Base URL**: `http://localhost:8080/api/v1`
 
+### Real-Time Updates (SSE)
+
+#### Connect to Real-Time Updates
+```http
+GET /api/v1/published-events/{eventId}/sse
+Accept: text/event-stream
+```
+
+**SSE Events:**
+
 ### 🎪 Event Management Endpoints
 
 #### Create Event

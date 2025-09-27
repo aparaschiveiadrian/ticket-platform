@@ -28,8 +28,9 @@ public class PublishedEventSseController {
   private static final Map<UUID, CopyOnWriteArraySet<SseEmitter>> eventConnections = new ConcurrentHashMap<>();
 
   @GetMapping(produces = "text/event-stream")
-  public SseEmitter streamEventUpdates(@PathVariable UUID eventId, @AuthenticationPrincipal Jwt jwt) throws IOException {
-    UUID userId = parseUserId(jwt);
+  public SseEmitter streamEventUpdates(@PathVariable UUID eventId//, @AuthenticationPrincipal Jwt jwt disabled for moment for testing
+  ) throws IOException {
+    //UUID userId = parseUserId(jwt);
 
     //10 minutes timeout till Spring calls the onTimeout callback
     SseEmitter emitter = new SseEmitter(10 * 60 * 1000L);
@@ -40,11 +41,30 @@ public class PublishedEventSseController {
     emitter.onTimeout(() -> removeConnection(eventId, emitter));
     emitter.onError((ex) -> removeConnection(eventId, emitter));
 
-    emitter.send(SseEmitter.event()//return sseEventBuilderImpl
-            .name("connected")
-            .data("Connected to real-time updates for event: " + eventId));
-
-    log.info("SSE connection established for event {} by user {}", eventId, userId);
+    // Send initial connection confirmation
+    try {
+      emitter.send(SseEmitter.event()
+              .name("connected")
+              .data("Connected to real-time updates for event: " + eventId));
+      
+      // small delay to ensure connection is stable
+      new Thread(() -> {
+        try {
+          Thread.sleep(200);
+          emitter.send(SseEmitter.event()
+                  .name("ready")
+                  .data("SSE connection is ready for real-time updates"));
+          log.info("SSE connection established and ready for event {} with {} total connections",
+                  eventId, eventConnections.get(eventId).size());
+        } catch (Exception e) {
+          log.error("Failed to send ready signal for event {}", eventId, e);
+        }
+      }).start();
+      
+    } catch (IOException e) {
+      log.error("Failed to send initial SSE message for event {}", eventId, e);
+      removeConnection(eventId, emitter);
+    }
 
     return emitter;
   }
@@ -62,26 +82,38 @@ public class PublishedEventSseController {
   //called in TicketServiceImpl when purchase is performed
   public static void broadcastTicketUpdate(UUID eventId, UUID ticketTypeId, int newQuantity) {
     CopyOnWriteArraySet<SseEmitter> connections = eventConnections.get(eventId);
+    log.debug("Broadcasting ticket update for event {} - Found {} connections", eventId, connections != null ? connections.size() : 0);
+    
     //check if there are connections
     if (connections != null && !connections.isEmpty()) {
       //get update message in JSON format
       String updateMessage = String.format("{\"ticketTypeId\":\"%s\",\"newQuantity\":%d}",
               ticketTypeId, newQuantity);
 
+      int initialConnectionCount = connections.size();
+      int successfulSends = 0;
+      int failedSends = 0;
+
       connections.removeIf(emitter -> {
         try {
           emitter.send(SseEmitter.event()
                   .name("ticket-update")
                   .data(updateMessage));
+          log.debug("Successfully sent SSE update to client for event {}", eventId);
           return false; // Keep connection
         } catch (IOException e) {
+          log.warn("Failed to send SSE update to client: {}", e.getMessage());
           return true; // Remove failed connection
         }
       });
-    }
 
-    log.info("Broadcasted ticket update for event " + eventId +
-            " ticket type " + ticketTypeId + " new quantity: " + newQuantity +
-            " to " + connections.size() + " connections");
+      failedSends = initialConnectionCount - connections.size();
+      successfulSends = initialConnectionCount - failedSends;
+      
+      log.info("Broadcasted ticket update for event {} ticket type {} new quantity: {} to {} connections ({} successful, {} failed)",
+              eventId, ticketTypeId, newQuantity, initialConnectionCount, successfulSends, failedSends);
+    } else {
+      log.debug("No SSE connections found for event {}", eventId);
+    }
   }
 }

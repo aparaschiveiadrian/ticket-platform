@@ -113,14 +113,15 @@ public class TicketTypeServiceImpl implements TicketTypeService {
         var saved = ticketRepository.saveAll(tickets);
         saved.forEach(qrCodeService::generateQrCodeForTicket);
         var ticketIds = saved.stream().map(Ticket::getId).toList();
-        //get updated ticket type to get new available quantity
-        TicketType updatedTicketType = ticketTypeRepository.findById(ticketTypeId)
-                .orElseThrow(() -> new TicketTypeNotFoundException("Ticket type not found!"));
-        //make the broadcast update for the sse opened connections
+        
+        // Calculate new available quantity (old quantity minus purchased quantity)
+        int newAvailableQuantity = ticketType.getTotalAvailable() - quantity;
+        
+        // Make the broadcast update for the SSE opened connections
         PublishedEventSseController.broadcastTicketUpdate(
-                updatedTicketType.getEvent().getId(),
+                ticketType.getEvent().getId(),
                 ticketTypeId,
-                updatedTicketType.getTotalAvailable()
+                newAvailableQuantity
         );
 
         return new PurchaseTicketsResponseDto(ticketTypeId, quantity, ticketIds);

@@ -52,4 +52,30 @@ public class PublishedEventSseController {
       }
     }
   }
+
+  //called in TicketServiceImpl when purchase is performed
+  public static void broadcastTicketUpdate(UUID eventId, UUID ticketTypeId, int newQuantity) {
+    CopyOnWriteArraySet<SseEmitter> connections = eventConnections.get(eventId);
+    //check if there are connections
+    if (connections != null && !connections.isEmpty()) {
+      //get update message in JSON format
+      String updateMessage = String.format("{\"ticketTypeId\":\"%s\",\"newQuantity\":%d}",
+              ticketTypeId, newQuantity);
+
+      connections.removeIf(emitter -> {
+        try {
+          emitter.send(SseEmitter.event()
+                  .name("ticket-update")
+                  .data(updateMessage));
+          return false; // Keep connection
+        } catch (IOException e) {
+          return true; // Remove failed connection
+        }
+      });
+    }
+
+    log.info("Broadcasted ticket update for event " + eventId +
+            " ticket type " + ticketTypeId + " new quantity: " + newQuantity +
+            " to " + connections.size() + " connections");
+  }
 }

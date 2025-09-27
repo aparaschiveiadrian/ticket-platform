@@ -25,6 +25,8 @@ public class SecurityConfig {
     configuration.setAllowedHeaders(Arrays.asList("*"));
     configuration.setAllowCredentials(true);
     configuration.setMaxAge(3600L);
+    //Enable: Event Source as header for SSE
+    configuration.setExposedHeaders(Arrays.asList("Cache-Control", "Connection"));
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/api/**", configuration);
@@ -43,6 +45,8 @@ public class SecurityConfig {
                             authorize
                                     .requestMatchers(HttpMethod.GET, "/api/v1/published-events/**")
                                     .permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/v1/published-events/*/sse")
+                                    .authenticated()
                                     .requestMatchers("/api/v1/events")
                                     .hasRole("ORGANIZER")
                                     .requestMatchers("/api/v1/ticket-validations/**")

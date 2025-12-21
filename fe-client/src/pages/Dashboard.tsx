@@ -13,12 +13,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>Ticket Platform Dashboard</h1>
-        <button onClick={handleLogout} className="logout-button">
-          Logout
-        </button>
-      </header>
+{/* Header removed as it is provided by Layout */ }
       
       <main className="dashboard-content">
         <div className="welcome-card">

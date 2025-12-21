@@ -4,73 +4,97 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  padding: 20px;
+  z-index: 10000;
+  padding: 24px;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
-  background: var(--color-white);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  max-width: 500px;
+  background: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
   width: 100%;
+  max-width: 440px;
   max-height: 90vh;
   overflow-y: auto;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 20px 25px;
-  border-bottom: 1px solid var(--border-light);
+  align-items: flex-start;
+  padding: 32px 32px 0;
+  margin-bottom: 24px;
 }
 
 .modal-header h2 {
   margin: 0;
   color: var(--color-primary);
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .close-button {
-  background: none;
+  background: #F2F2F7;
   border: none;
-  font-size: 1.8rem;
-  color: var(--text-light);
+  font-size: 1.5rem;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 0;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .close-button:hover {
-  background: var(--bg-light);
-  color: var(--color-primary);
+  background: #E5E5EA;
+  color: var(--text-primary);
 }
 
 .modal-body {
-  padding: 25px;
+  padding: 0 32px 32px;
 }
 
 .ticket-info {
-  margin-bottom: 25px;
+  margin-bottom: 32px;
+  background: #FAFAFA;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .ticket-info h3 {
-  margin: 0 0 10px 0;
+  margin: 0 0 4px 0;
   color: var(--color-primary);
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .price-info {
@@ -78,177 +102,193 @@
 }
 
 .unit-price {
-  color: var(--color-accent);
-  font-size: 1.1rem;
-  font-weight: 600;
+  color: #E50914;
+  /* Netflix Red */
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .availability-info {
-  margin-bottom: 15px;
+  margin-top: 12px;
 }
 
 .availability-text {
-  color: var(--text-light);
-  font-size: 0.9rem;
-  background: var(--bg-light);
-  padding: 4px 8px;
-  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 6px 12px;
+  border-radius: 999px;
 }
 
 .quantity-section {
-  margin-bottom: 25px;
+  margin-bottom: 32px;
 }
 
 .quantity-section label {
   display: block;
-  margin-bottom: 10px;
-  color: var(--color-primary);
+  margin-bottom: 12px;
+  color: var(--text-secondary);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 12px;
+  background: #FAFAFA;
+  padding: 8px;
+  border-radius: 999px;
+  /* Pill container */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  width: fit-content;
+  margin: 0 auto 12px;
+  /* Center it */
 }
 
 .quantity-btn {
-  background: var(--color-primary);
-  color: var(--color-white);
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  background: #FFFFFF;
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .quantity-btn:hover:not(:disabled) {
-  background: var(--color-primary-dark);
+  transform: scale(1.1);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .quantity-btn:disabled {
-  background: var(--border-light);
-  color: var(--text-light);
+  opacity: 0.3;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .quantity-input {
-  width: 80px;
+  width: 60px;
   height: 40px;
-  border: 2px solid var(--border-light);
-  border-radius: 8px;
+  border: none;
+  background: transparent;
   text-align: center;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--color-primary);
-  background: var(--color-white);
 }
 
 .quantity-input:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(190, 49, 68, 0.1);
 }
 
 .quantity-limit {
-  color: var(--text-light);
-  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
   text-align: center;
 }
 
 .total-section {
-  background: var(--bg-light);
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 32px;
 }
 
 .total-line {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
-  color: var(--text-dark);
-}
-
-.total-line:last-child {
-  margin-bottom: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
 .total-final {
-  border-top: 1px solid var(--border-light);
-  padding-top: 8px;
-  font-size: 1.1rem;
+  margin-top: 16px;
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  align-items: center;
+}
+
+.total-final span:last-child {
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .error-message {
-  background: #fee;
-  color: var(--color-accent);
-  padding: 12px 15px;
-  border-radius: 6px;
-  border: 1px solid #fcc;
-  margin-bottom: 20px;
+  background: #FFEBEE;
+  color: #D32F2F;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
   font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 .modal-footer {
   display: flex;
-  gap: 15px;
-  padding: 20px 25px;
-  border-top: 1px solid var(--border-light);
+  gap: 16px;
+  padding: 0 32px 32px;
 }
 
 .cancel-btn {
   flex: 1;
-  background: var(--bg-light);
-  color: var(--text-dark);
-  border: 1px solid var(--border-light);
-  padding: 12px 20px;
-  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 999px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .cancel-btn:hover:not(:disabled) {
-  background: var(--border-light);
-}
-
-.cancel-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  background: #FAFAFA;
+  border-color: rgba(0, 0, 0, 0.2);
+  color: var(--color-primary);
 }
 
 .purchase-btn {
   flex: 2;
-  background: var(--color-accent);
-  color: var(--color-white);
+  background: #000000;
+  /* Black for premium actionable */
+  color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 16px;
+  border-radius: 999px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .purchase-btn:hover:not(:disabled) {
-  background: var(--color-accent-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(190, 49, 68, 0.3);
+  background: #E50914;
+  /* Red on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(229, 9, 20, 0.25);
 }
 
 .purchase-btn:disabled {
-  background: var(--border-light);
-  color: var(--text-light);
+  background: #E5E5EA;
+  color: #8E8E93;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -257,26 +297,17 @@
 /* Responsive Design */
 @media (max-width: 600px) {
   .modal-content {
-    margin: 10px;
+    margin: 20px;
     max-width: none;
+    border-radius: 24px;
   }
-  
-  .modal-header,
-  .modal-body,
+
   .modal-footer {
-    padding: 15px 20px;
+    flex-direction: column-reverse;
   }
-  
-  .quantity-controls {
-    justify-content: center;
-  }
-  
-  .modal-footer {
-    flex-direction: column;
-  }
-  
-  .cancel-btn,
-  .purchase-btn {
-    flex: none;
+
+  .cancel-btn {
+    border: none;
+    padding: 12px;
   }
 }

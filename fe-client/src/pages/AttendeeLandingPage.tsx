@@ -29,7 +29,7 @@ const AttendeeLandingPage: React.FC = () => {
   const loadInitialData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const [ticketsData, eventsData] = await Promise.all([
         ticketsService.getMyTickets({ page: 0, size: 10 }),
@@ -49,12 +49,12 @@ const AttendeeLandingPage: React.FC = () => {
 
   const loadMoreTickets = async () => {
     if (loadingMore || !ticketsHasMore) return;
-    
+
     setLoadingMore(true);
     try {
       const nextPage = ticketsPage + 1;
       const data = await ticketsService.getMyTickets({ page: nextPage, size: 10 });
-      
+
       setMyTickets(prev => [...prev, ...data.content]);
       setTicketsPage(nextPage);
       setTicketsHasMore(!data.last);
@@ -67,14 +67,14 @@ const AttendeeLandingPage: React.FC = () => {
 
   const loadMoreEvents = async () => {
     if (loadingMore || !eventsHasMore) return;
-    
+
     setLoadingMore(true);
     try {
       const nextPage = eventsPage + 1;
-      const data = searchQuery 
+      const data = searchQuery
         ? await eventsService.searchPublishedEvents(searchQuery, { page: nextPage, size: 10, sort: 'name,asc' })
         : await eventsService.getPublishedEvents({ page: nextPage, size: 6 });
-      
+
       setPublishedEvents(prev => [...prev, ...data.content]);
       setEventsPage(nextPage);
       setEventsHasMore(!data.last);
@@ -89,12 +89,12 @@ const AttendeeLandingPage: React.FC = () => {
     setSearchQuery(query);
     setEventsPage(0);
     setEventsHasMore(true);
-    
+
     try {
-      const data = query 
+      const data = query
         ? await eventsService.searchPublishedEvents(query, { page: 0, size: 10, sort: 'name,asc' })
         : await eventsService.getPublishedEvents({ page: 0, size: 6 });
-      
+
       setPublishedEvents(data.content);
       setEventsHasMore(!data.last);
     } catch (err: any) {
@@ -151,7 +151,7 @@ const AttendeeLandingPage: React.FC = () => {
           {ticket.status}
         </div>
       </div>
-      
+
       <div className="ticket-details">
         <div className="event-name">{ticket.eventName}</div>
         <div className="ticket-price">{formatPrice(ticket.ticketType.price)}</div>
@@ -159,7 +159,7 @@ const AttendeeLandingPage: React.FC = () => {
       </div>
 
       <div className="ticket-actions" onClick={(e) => e.stopPropagation()}>
-        <button 
+        <button
           className="action-btn download-btn"
           onClick={() => handleDownloadQrCode(ticket.id)}
         >
@@ -177,7 +177,7 @@ const AttendeeLandingPage: React.FC = () => {
           Published
         </div>
       </div>
-      
+
       <div className="event-details">
         <div className="event-info">
           <div className="info-item">
@@ -217,17 +217,17 @@ const AttendeeLandingPage: React.FC = () => {
       <div className="attendee-hero">
         <div className="hero-content">
           <div className="welcome-section">
-            <h1>Welcome, {userInfo?.name || 'Attendee'}!</h1>
+            <h1>Welcome, {userInfo?.name || 'Attendee'}</h1>
             <p className="hero-subtitle">
               Manage your tickets and discover amazing events
             </p>
           </div>
-          
+
           <div className="action-cards">
             <div className="action-card my-tickets" onClick={() => setActiveTab('tickets')}>
-              <div className="card-icon">🎫</div>
+              <div className="card-icon">🎟️</div>
               <h3>My Tickets</h3>
-              <p>View and manage your purchased tickets</p>
+              <p>View and manage all your purchased tickets</p>
               <div className="card-button">
                 <span>View Tickets</span>
                 <span className="arrow">→</span>
@@ -235,9 +235,9 @@ const AttendeeLandingPage: React.FC = () => {
             </div>
 
             <div className="action-card discover-events" onClick={() => setActiveTab('discover')}>
-              <div className="card-icon">🔍</div>
+              <div className="card-icon">🌍</div>
               <h3>Discover Events</h3>
-              <p>Browse and purchase tickets for upcoming events</p>
+              <p>Browse the latest events and experiences</p>
               <div className="card-button">
                 <span>Explore Events</span>
                 <span className="arrow">→</span>
@@ -256,13 +256,13 @@ const AttendeeLandingPage: React.FC = () => {
 
       <div className="attendee-content">
         <div className="content-tabs">
-          <button 
+          <button
             className={`tab-button ${activeTab === 'tickets' ? 'active' : ''}`}
             onClick={() => setActiveTab('tickets')}
           >
             My Tickets ({myTickets.length})
           </button>
-          <button 
+          <button
             className={`tab-button ${activeTab === 'discover' ? 'active' : ''}`}
             onClick={() => setActiveTab('discover')}
           >
@@ -293,7 +293,7 @@ const AttendeeLandingPage: React.FC = () => {
                   <div className="empty-icon">🎫</div>
                   <h3>No tickets yet</h3>
                   <p>Purchase tickets for events to see them here!</p>
-                  <button 
+                  <button
                     className="discover-events-btn"
                     onClick={() => setActiveTab('discover')}
                   >
@@ -303,10 +303,10 @@ const AttendeeLandingPage: React.FC = () => {
               ) : (
                 myTickets.map(ticket => renderTicketCard(ticket))
               )}
-              
+
               {ticketsHasMore && (
                 <div className="load-more-section">
-                  <button 
+                  <button
                     className="load-more-btn"
                     onClick={loadMoreTickets}
                     disabled={loadingMore}
@@ -327,10 +327,10 @@ const AttendeeLandingPage: React.FC = () => {
               ) : (
                 publishedEvents.map(event => renderEventCard(event))
               )}
-              
+
               {eventsHasMore && (
                 <div className="load-more-section">
-                  <button 
+                  <button
                     className="load-more-btn"
                     onClick={loadMoreEvents}
                     disabled={loadingMore}
